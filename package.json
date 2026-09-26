@@ -1,0 +1,9 @@
+{
+  "name": "retos-periferia",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync": "bun run scripts/sync-core.ts",
+    "verificar-core": "bun run scripts/sync-core.ts --verificar"
+  }
+}
