@@ -116,7 +116,7 @@ async function main(): Promise<void> {
       await herramientas.registrar.execute(
         {
           mensaje_id: "msg-006",
-          contrato: { ...msg006.contrato, valor: 0, fecha_fin: "2027-08-31" },
+          contrato: { valor: 0, fecha_fin: "2027-08-31" },
           confirmado: true,
         },
         ctx,

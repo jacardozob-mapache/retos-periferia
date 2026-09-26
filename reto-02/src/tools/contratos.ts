@@ -47,7 +47,7 @@ const contrato = z
   })
   .optional()
   .describe(
-    "Datos del contrato tal como los devolvió contratos_extraer. Solo se aceptan cambios en campos que estén en requiere_revision; el resto sale del documento.",
+    "Opcional: omítelo y el servidor vuelve a extraer del documento. Al confirmar, envía solo los campos confirmados o corregidos; solo se aceptan campos que estén en requiere_revision.",
   )
 
 export const leer_buzon = definirHerramienta({

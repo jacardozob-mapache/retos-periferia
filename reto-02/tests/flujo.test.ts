@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test"
-import { readFile } from "node:fs/promises"
+import { readFile, writeFile } from "node:fs/promises"
 import { join } from "node:path"
 import type { ContextoHerramienta } from "../src/core/contratos"
 import type { EntradaHistorial } from "../src/dominio/alertas"
@@ -350,6 +350,18 @@ describe("reglas de clasificación en variantes", () => {
       data: { accion: "actualizado" },
     })
     expect((await maestro()).find((f) => f.id_contrato === "CT-2026-012")?.valor).toBe("230000000")
+  })
+
+  test("asunto con [MIGRACION] (campaña de cierre del gap) registra fuente = migracion", async () => {
+    await agregarMensaje(ctx.directory, "msg-023", { "contrato.txt": contratoDePrueba() })
+    const ruta = join(ctx.directory, "fixtures/reto-02/buzon/msg-023/correo.json")
+    const correo = JSON.parse(await readFile(ruta, "utf8")) as Record<string, unknown>
+    await writeFile(
+      ruta,
+      JSON.stringify({ ...correo, asunto: "[MIGRACION] Acme Andina - CT-2026-099 - Contrato" }),
+    )
+    expect(await registrar("msg-023")).toMatchObject({ ok: true, data: { accion: "insertado" } })
+    expect((await maestro()).find((f) => f.id_contrato === "CT-2026-099")?.fuente).toBe("migracion")
   })
 
   test("otrosí de un contrato que no está en el maestro → rechazado con motivo", async () => {

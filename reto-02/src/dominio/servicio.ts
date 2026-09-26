@@ -232,6 +232,12 @@ function carpetaDeFila(fila: FilaMaestro): { anio: string; slug: string } | null
   return partes.length >= 4 && partes[1] && partes[2] ? { anio: partes[1], slug: partes[2] } : null
 }
 
+/** `migracion` si el asunto trae la etiqueta de la campaña de cierre del gap (regla de gobierno); si no, `buzon`. */
+async function fuenteDelMensaje(directorio: string, mensajeId: string): Promise<"buzon" | "migracion"> {
+  const correo = await leerCorreo(directorio, mensajeId)
+  return /^\s*\[MIGRACI[OÓ]N\]/i.test(correo.asunto) ? "migracion" : "buzon"
+}
+
 function exigirCompleto(v: ValoresContrato, campos: Campo[]): void {
   const faltan = campos.filter((c) => v[c] === null && !(c === "tipo_poliza" && v.requiere_poliza === false))
   if (faltan.length > 0) {
@@ -324,7 +330,7 @@ export async function registrar(
         comercial: r.comercial.nombre ?? "",
         ruta_sharepoint: rutaSharepoint,
         fecha_registro: hoy,
-        fuente: "buzon",
+        fuente: await fuenteDelMensaje(directorio, mensajeId),
       }
       for (const campo of CAMPOS) cambios[campo] = { antes: null, despues: fila[campo] }
       await archivarAdjunto(directorio, mensajeId, contrato.adjunto, rutaSharepoint)

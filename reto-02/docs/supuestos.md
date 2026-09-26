@@ -50,5 +50,6 @@ Cada ambigüedad del PRD se resolvió con un supuesto explícito. Todos están c
 | S32 | La ventana de vencimiento es `0 ≤ días ≤ 60` desde `hoy`; los contratos ya vencidos no entran en esa sección. | "Vencen en ≤ 60 días" se refiere a vencimientos futuros. |
 | S33 | `contratos_alertas` acepta `hoy` opcional: si falta, usa `ctx.hoy` o la fecha de Bogotá. | Robustez con modelos pequeños; la demo siempre la pasa explícita. |
 | S34 | `contratos_leer_pdf` solo lee `.pdf` con capa de texto dentro del workspace: rechaza rutas absolutas, `..` que salgan del directorio y enlaces simbólicos que apunten afuera. Un PDF sin texto responde que requiere OCR. | Seguridad de rutas; el OCR es un no-objetivo del PRD. Los adjuntos `.pdf` del buzón se leen igual. |
+| S35 | `fuente = migracion` cuando el asunto del correo empieza con `[MIGRACION]` (campaña de cierre del gap de la regla de gobierno); en cualquier otro caso `fuente = buzon`. | Deja trazable en el maestro qué filas vienen de la reconstrucción de junio–agosto de 2026. |
 
 *Última actualización: 2026-09-26*

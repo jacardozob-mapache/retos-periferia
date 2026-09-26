@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test"
-import { mkdir, symlink, writeFile } from "node:fs/promises"
+import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import type { ContextoHerramienta } from "../src/core/contratos"
@@ -167,6 +167,25 @@ describe("contratos_leer_pdf (P1)", () => {
     await symlink(externo, join(ctx.directory, "enlace.pdf"))
     const r = leer(await herramientas.leer_pdf.execute({ ruta: "enlace.pdf" }, ctx))
     expect(r).toMatchObject({ ok: false, error: 'Ruta fuera del workspace: "enlace.pdf".' })
+  })
+
+  test("acepta un PDF bajo fixtures/ cuando fixtures es un enlace simbólico (workspace del servidor)", async () => {
+    const externo = await mkdtemp(join(tmpdir(), "reto02-fixtures-"))
+    try {
+      await writeFile(join(externo, "anexo.pdf"), pdfConTexto("ANEXO 1"))
+      const workspace = await mkdtemp(join(tmpdir(), "reto02-ws-"))
+      await symlink(externo, join(workspace, "fixtures"), "dir")
+      const r = exigirOk<{ texto: string }>(
+        await herramientas.leer_pdf.execute(
+          { ruta: "fixtures/anexo.pdf" },
+          { directory: workspace, sessionId: "s" },
+        ),
+      )
+      expect(r.texto).toContain("ANEXO 1")
+      await rm(workspace, { recursive: true, force: true })
+    } finally {
+      await rm(externo, { recursive: true, force: true })
+    }
   })
 
   test("un adjunto PDF del buzón se extrae igual que un .txt", async () => {

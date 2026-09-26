@@ -1,3 +1,7 @@
+---
+name: registro-contratos
+description: "Conocimiento del proceso de registro de contratos vigentes de Periferia: reglas RN1–RN6, esquema del maestro, criterios de confianza por campo, qué confirma la analista y secciones del reporte de alertas. Úsala al procesar el buzón de contratos, validar un contrato u otrosí, o explicar por qué un campo requiere revisión."
+---
 # Registro de contratos vigentes — conocimiento del proceso
 
 ## Contexto

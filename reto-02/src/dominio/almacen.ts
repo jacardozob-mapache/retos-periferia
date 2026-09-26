@@ -287,7 +287,12 @@ export async function leerPdfEnWorkspace(
   if (fueraDe(raiz, objetivo)) throw new ErrorDominio(`Ruta fuera del workspace: "${ruta}".`)
   if (extname(objetivo).toLowerCase() !== ".pdf") throw new ErrorDominio(`"${ruta}" no es un archivo .pdf.`)
   if (!(await existe(objetivo))) throw new ErrorDominio(`No existe el archivo "${ruta}".`)
-  if (fueraDe(await realpath(raiz), await realpath(objetivo))) {
+  // En el servidor, `fixtures/` del workspace es un enlace simbólico a los fixtures del reto:
+  // se aceptan destinos reales dentro del workspace o dentro de esa carpeta de fixtures.
+  const real = await realpath(objetivo)
+  const raices = [await realpath(raiz)]
+  if (await existe(join(raiz, "fixtures"))) raices.push(await realpath(join(raiz, "fixtures")))
+  if (raices.every((r) => fueraDe(r, real))) {
     throw new ErrorDominio(`Ruta fuera del workspace: "${ruta}".`)
   }
   const { texto, paginas } = await textoDePdf(objetivo)
