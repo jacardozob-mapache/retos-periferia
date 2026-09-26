@@ -20,7 +20,7 @@ Cómo se abordaron los tres retos en paralelo y en qué punto está el trabajo. 
 - Gemini 3 exige reenviar el `thought_signature` de cada llamada a herramienta (verificado: sin él responde 400).
 - Despliegue: Vercel Hobby (un proyecto por reto, Root Directory `reto-0X`) + Upstash Redis capa gratuita (una base compartida con prefijo por reto).
 - Link público protegido con `ACCESS_KEY` (va en el correo de entrega); panel `/admin` con `ADMIN_KEY` para ver el uso.
-- Rúbrica: el PRD no la trae; se trabaja con pesos supuestos (`reto-0X/docs/solucion/rubrica-supuesta.md`), que se citan en el correo de entrega.
+- Rúbrica: el PRD no la trae; se trabaja con pesos supuestos (anexo de cada `reto-0X/SOLUCION.md`), que se citan en el correo de entrega.
 - Reglas de negocio ambiguas: se resuelven con supuestos documentados (`reto-0X/docs/supuestos.md`); nada queda pendiente.
 - msg-006 (reto-02): `fecha_inicio` con confianza 0,80 para alinear con el PRD (revisión humana de valor y fecha_fin).
 
