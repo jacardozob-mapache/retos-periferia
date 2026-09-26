@@ -1,0 +1,6 @@
+{
+  "archivoHerramientas": "contratos",
+  "skill": "registro-contratos",
+  "descripcionAgente": "Agente de registro de contratos vigentes: lee el buzón único de contratos, extrae los datos del documento con confianza por campo, clasifica en nuevo, actualización, duplicado o rechazado, registra en el maestro con archivo tipo SharePoint e historial, pide confirmación humana para lo dudoso y genera alertas de vencimiento y pólizas.",
+  "descripcionSkill": "Conocimiento del proceso de registro de contratos vigentes de Periferia: reglas RN1–RN6, esquema del maestro, criterios de confianza por campo, qué confirma la analista y secciones del reporte de alertas. Úsala al procesar el buzón de contratos, validar un contrato u otrosí, o explicar por qué un campo requiere revisión."
+}
