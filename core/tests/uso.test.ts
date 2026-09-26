@@ -16,8 +16,14 @@ describe("visitante", () => {
       "1.2.3.4",
     )
     expect(ipReal(new Headers({ "x-forwarded-for": "5.6.7.8, 10.0.0.1" }), "8.8.8.8")).toBe("5.6.7.8")
+    expect(ipReal(new Headers({ "x-real-ip": "4.4.4.4" }), "8.8.8.8")).toBe("4.4.4.4")
     expect(ipReal(new Headers(), "8.8.8.8")).toBe("8.8.8.8")
     expect(ipReal(new Headers(), null)).toBe("desconocida")
+  })
+
+  test("país desde x-vercel-ip-country (Vercel) o cf-ipcountry", () => {
+    expect(datosVisitante(new Headers({ "x-vercel-ip-country": "co" }), "1.2.3.4", "s").pais).toBe("CO")
+    expect(datosVisitante(new Headers({ "x-vercel-ip-country": "xx1" }), "1.2.3.4", "s").pais).toBeNull()
   })
 
   test("prefijos /24 y /48", () => {

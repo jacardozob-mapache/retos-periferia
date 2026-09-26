@@ -1,0 +1,265 @@
+/* Panel de uso: página con desplazamiento normal, indicadores y tablas con barras. */
+
+.admin {
+  min-block-size: 100dvh;
+}
+
+.admin .encabezado {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+}
+
+.admin-principal {
+  inline-size: min(100% - 2rem, 76rem);
+  margin-inline: auto;
+  padding-block: var(--e-4) var(--e-6);
+  display: grid;
+  gap: var(--e-5);
+}
+
+.admin-principal:focus {
+  outline: none;
+}
+
+.admin-generado {
+  color: var(--tinta-2);
+  font-size: var(--t-sm);
+  min-block-size: 1.3em;
+}
+
+.bloque {
+  display: grid;
+  gap: var(--e-3);
+  min-inline-size: 0;
+  align-content: start;
+}
+
+.bloque h2 {
+  font-size: var(--t-lg);
+  line-height: 1.3;
+}
+
+.rejilla-dos {
+  display: grid;
+  gap: var(--e-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
+}
+
+/* ─── Indicadores ─────────────────────────────────────────────────────────── */
+
+.indicadores {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 9rem), 1fr));
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-bloque);
+  overflow: hidden;
+}
+
+.indicador {
+  padding: var(--e-3) var(--e-4);
+  border-inline-end: 1px solid var(--linea);
+  border-block-end: 1px solid var(--linea);
+  margin: 0 -1px -1px 0;
+}
+
+.indicador dt {
+  color: var(--tinta-2);
+  font-size: var(--t-sm);
+}
+
+.indicador dd {
+  margin: 0;
+  display: grid;
+}
+
+.indicador-valor {
+  font-size: 1.625rem;
+  font-weight: 650;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+
+.indicador-detalle {
+  color: var(--tinta-2);
+  font-size: var(--t-xs);
+}
+
+/* ─── Tablas ──────────────────────────────────────────────────────────────── */
+
+.tabla-contenedor {
+  /* Contiene a los hijos .solo-lector (absolutos) dentro del área desplazable. */
+  position: relative;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-bloque);
+}
+
+.tabla {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabla th,
+.tabla td {
+  padding: var(--e-2) var(--e-3);
+  text-align: start;
+  border-block-end: 1px solid var(--linea);
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+.tabla thead th {
+  background: var(--hundido);
+  color: var(--tinta-2);
+  font-weight: 600;
+}
+
+.tabla tbody th {
+  font-weight: 500;
+}
+
+.tabla tbody tr:last-child > * {
+  border-block-end: 0;
+}
+
+.tabla .num {
+  text-align: end;
+}
+
+.col-barra {
+  inline-size: 45%;
+  min-inline-size: 10rem;
+}
+
+.celda-barra {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(4rem, 1fr);
+  align-items: center;
+  gap: var(--e-2);
+}
+
+.celda-barra-valor {
+  text-align: end;
+}
+
+.barra {
+  display: block;
+  block-size: 0.625rem;
+  background: var(--hundido);
+  border-radius: 0 4px 4px 0;
+  overflow: hidden;
+}
+
+.barra-relleno {
+  display: block;
+  block-size: 100%;
+  min-inline-size: 0;
+  background: var(--acento);
+  border-radius: 0 4px 4px 0;
+}
+
+.tabla-pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-3);
+  color: var(--tinta-2);
+  font-size: var(--t-sm);
+}
+
+.lista-errores {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: var(--r-bloque);
+}
+
+.lista-errores li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-1) var(--e-3);
+  padding: var(--e-2) var(--e-3);
+  border-block-end: 1px solid var(--linea);
+  font-size: var(--t-sm);
+}
+
+.lista-errores li:last-child {
+  border-block-end: 0;
+}
+
+.lista-errores time {
+  color: var(--tinta-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.lista-errores span {
+  flex: 1 1 16rem;
+}
+
+/* ─── Transcripción ───────────────────────────────────────────────────────── */
+
+.transcripcion h2:focus {
+  outline: none;
+}
+
+.transcripcion h2 code {
+  font-size: 0.8em;
+  overflow-wrap: anywhere;
+}
+
+.enlace-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  inline-size: fit-content;
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+
+.ficha {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2) var(--e-5);
+  font-size: var(--t-sm);
+}
+
+.ficha dt {
+  color: var(--tinta-2);
+}
+
+.ficha dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.transcripcion-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--e-4);
+  max-inline-size: 52rem;
+}
+
+.transcripcion-lista > li {
+  display: grid;
+  min-inline-size: 0;
+}
+
+.eventos {
+  font-size: var(--t-sm);
+}
+
+.eventos .tabla-contenedor {
+  margin-block-start: var(--e-2);
+}

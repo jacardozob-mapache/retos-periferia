@@ -118,6 +118,54 @@ describe("ejecutarTurno", () => {
     expect(sesion.mensajes.at(-1)).toEqual({ rol: "assistant", contenido: r.reply })
   })
 
+  test("tope de duración con reloj inyectado: no inicia otra llamada si no alcanza", async () => {
+    let ahora = 0
+    const guion: Guion = ({ indice }) => {
+      ahora += 100_000 // cada llamada al modelo "tarda" 100 s
+      return indice < 5
+        ? { llamadas: [{ nombre: "demo_leer_caso", argumentos: { caso: "alfa" } }] }
+        : { texto: "fin" }
+    }
+    const a = crearAdaptadorGuionado(guion)
+    const r = await turno(a, {
+      reloj: () => ahora,
+      limites: { maxDuracionTurnoMs: 270_000, llmTimeoutMs: 30_000 },
+    })
+    // t=0 → llamada 1 (t=100 s) → llamada 2 (t=200 s) → quedan 70 s ≥ 30 s → llamada 3 (t=300 s) → corta
+    expect(a.llamadas).toBe(3)
+    expect(r.reply).toContain("Alcancé el tiempo máximo de este turno (270 s)")
+    expect(r.reply).toContain("Lo que ya tengo")
+    expect(r.error).toBeUndefined()
+    expect(r.toolCalls).toHaveLength(3)
+  })
+
+  test("tope de duración: si el tiempo restante no alcanza para una llamada, no consulta el modelo", async () => {
+    const a = crearAdaptadorGuionado([{ texto: "x" }])
+    const r = await turno(a, { limites: { maxDuracionTurnoMs: 20_000, llmTimeoutMs: 30_000 } })
+    expect(a.llamadas).toBe(0)
+    expect(r.reply).toContain("tiempo máximo de este turno (20 s)")
+  })
+
+  test("tope de duración: la llamada en curso se aborta al agotarse el tiempo restante", async () => {
+    let senal: AbortSignal | undefined
+    const adaptador = {
+      llamadas: 0,
+      proveedor: "lento",
+      modelo: "m",
+      enviar: (_m: unknown, _h: unknown, o?: { signal?: AbortSignal }) => {
+        senal = o?.signal
+        return new Promise<never>((_r, rechazar) =>
+          o?.signal?.addEventListener("abort", () => rechazar(new Error("abortado"))),
+        )
+      },
+    }
+    const inicio = performance.now()
+    const r = await turno(adaptador, { limites: { maxDuracionTurnoMs: 150, llmTimeoutMs: 100 } })
+    expect(senal?.aborted).toBe(true)
+    expect(performance.now() - inicio).toBeLessThan(1000)
+    expect(r.reply).toContain("Alcancé el tiempo máximo")
+  })
+
   test("error del proveedor → mensaje claro, sesión viva y siguiente turno funciona", async () => {
     const eventos: EventoChat[] = []
     const internos: EventoInterno[] = []
