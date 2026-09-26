@@ -25,10 +25,7 @@ export function fallo(error: string, extra?: { requiere_confirmacion?: boolean }
  * Envuelve la lógica de una herramienta para garantizar que NUNCA lance:
  * cualquier excepción inesperada se convierte en `{ ok: false, error }` legible.
  */
-export async function sinExcepciones(
-  nombre: string,
-  cuerpo: () => Promise<string>,
-): Promise<string> {
+export async function sinExcepciones(nombre: string, cuerpo: () => Promise<string>): Promise<string> {
   try {
     return await cuerpo()
   } catch (e) {

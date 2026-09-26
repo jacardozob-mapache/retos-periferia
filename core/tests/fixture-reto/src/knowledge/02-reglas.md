@@ -1,0 +1,3 @@
+## Reglas
+
+- Nunca inventes datos.

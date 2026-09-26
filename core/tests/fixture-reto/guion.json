@@ -1,0 +1,10 @@
+{
+  "pasos": [
+    { "llamadas": [{ "nombre": "demo_leer_caso", "argumentos": { "caso": "alfa" } }] },
+    { "texto": "El caso alfa es de Cliente Alfa S.A.S. por 1500000." },
+    { "llamadas": [{ "nombre": "demo_enviar", "argumentos": { "caso": "alfa", "confirmado": true } }] },
+    { "texto": "Para enviar necesito tu confirmación." },
+    { "llamadas": [{ "nombre": "demo_enviar", "argumentos": { "caso": "alfa", "confirmado": true } }] },
+    { "texto": "Listo: envié el caso alfa." }
+  ]
+}

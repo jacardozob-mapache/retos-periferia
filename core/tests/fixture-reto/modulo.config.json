@@ -1,0 +1,6 @@
+{
+  "archivoHerramientas": "demo",
+  "skill": "proceso-demo",
+  "descripcionAgente": "Agente de prueba: úsalo cuando digan \"procesa el caso de prueba\".",
+  "descripcionSkill": "Conocimiento del proceso de prueba: úsala cuando pregunten \"cómo funciona el proceso demo\"."
+}

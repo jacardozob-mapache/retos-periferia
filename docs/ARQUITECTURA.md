@@ -11,9 +11,10 @@ retos-periferia/
 │   │   ├── contratos.ts        # tipos congelados (herramientas, LLM, API)
 │   │   ├── fecha.ts            # hoy en America/Bogota, FECHA_REFERENCIA
 │   │   ├── herramientas/       # definirHerramienta, exito/fallo, registro zod → JSON Schema
-│   │   ├── llm/                # adaptador, openai-compatible (Gemini/Groq/...), anthropic, guionado (tests), cadena con respaldo
+│   │   ├── llm/                # adaptador, openai-compatible (Gemini y otros), anthropic, guionado (tests), cadena con respaldo
 │   │   ├── agente/             # ciclo del agente, guarda de confirmación, presupuesto
-│   │   ├── sesiones/           # sesiones en archivo + workspace aislado por sesión
+│   │   ├── sesiones/           # sesiones + workspace aislado por sesión
+│   │   ├── almacen/            # puerto de persistencia: archivo (local/Docker) | upstash (Vercel)
 │   │   ├── auditoria/          # out/log.jsonl, registro de uso (analítica), admin
 │   │   ├── http/               # servidor Hono + Bun.serve, auth por llave, SSE
 │   │   └── modulo/             # generador del bonus modulo/ (agent.md + SKILL.md)
@@ -34,10 +35,10 @@ retos-periferia/
 │   ├── modulo/                 # bonus (generado desde agent/prompt.md + src/knowledge + src/tools)
 │   ├── docs/PRD.md             # PRD original
 │   ├── demo.ts                 # herramientas sin modelo, determinista
-│   ├── Dockerfile  fly.toml  .env.example  package.json  tsconfig.json
+│   ├── vercel.json  Dockerfile  .env.example  package.json  tsconfig.json
 │   ├── README.md  SOLUCION.md
 ├── scripts/                    # sync-core, verificar-core, exportar-reto
-├── .github/workflows/          # CI, CodeQL, despliegue a Fly.io
+├── .github/workflows/          # CI, CodeQL, verificación post-despliegue (Vercel)
 ├── .claude/skills/             # skills de terceros auditadas (no se exportan)
 └── entrega/                    # correo de entrega (no se exporta)
 ```
@@ -81,13 +82,12 @@ export const leer_solicitud = definirHerramienta({
 
 | Proveedor (`LLM_PROVIDER`) | Implementación | Uso |
 |---|---|---|
-| `gemini` (por defecto) | OpenAI-compatible → `https://generativelanguage.googleapis.com/v1beta/openai/` | Capa gratuita. Modelo por defecto `gemini-3.5-flash-lite`. |
-| `groq` | OpenAI-compatible → `https://api.groq.com/openai/v1` | Respaldo gratuito. Modelo `openai/gpt-oss-120b`. |
-| `openai-compatible` | OpenAI-compatible con `LLM_BASE_URL` | OpenRouter, Mistral, Cerebras, local (Ollama/LM Studio). |
+| `gemini` (por defecto) | OpenAI-compatible → `https://generativelanguage.googleapis.com/v1beta/openai/` | Capa gratuita. Principal `gemini-3.8-flash`, respaldo `gemini-3.5-flash-lite` (misma clave; la cuota gratuita es por modelo). Reenvía el `thought_signature` de cada llamada a herramienta (obligatorio en Gemini 3). |
+| `openai-compatible` | OpenAI-compatible con `LLM_BASE_URL` | Extensión para producción: Groq, OpenRouter, Mistral, local (Ollama/LM Studio). |
 | `anthropic` | Messages API | Opción de pago de mayor calidad. |
 | `guionado` | Respuestas guionadas desde archivo | Pruebas e2e sin clave. |
 
-`LLM_FALLBACK_PROVIDER` / `LLM_FALLBACK_MODEL` / `LLM_FALLBACK_API_KEY`: si el principal responde 429/5xx/timeout, el núcleo reintenta con el respaldo. Implementado con `fetch` nativo (sin SDK): cero dependencias extra.
+`LLM_FALLBACK_PROVIDER` / `LLM_FALLBACK_MODEL` / `LLM_FALLBACK_API_KEY`: si el principal responde 429/5xx/timeout, el núcleo reintenta con el respaldo (sin clave de respaldo y mismo proveedor, reutiliza `LLM_API_KEY`). Para el reto se usa un solo proveedor (Gemini→Gemini); en producción se recomienda encadenar proveedores distintos para estabilidad. Implementado con `fetch` nativo (sin SDK): cero dependencias extra.
 
 ## 5. API HTTP
 
@@ -107,12 +107,12 @@ Llave de acceso: header `x-access-key` (el front la pide en una pantalla de ingr
 
 ## 6. Registro de uso (analítica para el dueño del demo)
 
-`DATA_DIR/uso.jsonl`, un evento por línea: `ingreso_ok`, `ingreso_fallido`, `sesion_nueva`, `mensaje`, `herramienta`, `llm` (tokens, latencia, proveedor), `confirmacion`, `error`. Cada evento: `ts`, `reto`, `sessionId`, `visitante` (hash de IP+UA con sal, sin guardar la IP completa), `ip_prefijo` (/24), `user_agent`, `pais` (header `Fly-Client-IP`/`CF-IPCountry` si existe). La pantalla de ingreso informa que el uso se registra con fines de auditoría del proceso.
+`uso.jsonl` en `DATA_DIR` (modo archivo) o una lista en Upstash Redis (modo upstash), un evento por línea: `ingreso_ok`, `ingreso_fallido`, `sesion_nueva`, `mensaje`, `herramienta`, `llm` (tokens, latencia, proveedor), `confirmacion`, `error`. Cada evento: `ts`, `reto`, `sessionId`, `visitante` (hash de IP+UA con sal, sin guardar la IP completa), `ip_prefijo` (/24), `user_agent`, `pais` (header `x-vercel-ip-country` si existe). La pantalla de ingreso informa que el uso se registra con fines de auditoría del proceso.
 
 ## 7. Variables de entorno
 
-`PORT`, `DATA_DIR`, `ACCESS_KEY`, `ADMIN_KEY`, `IP_HASH_SALT`, `LLM_PROVIDER`, `LLM_MODEL`, `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_FALLBACK_PROVIDER`, `LLM_FALLBACK_MODEL`, `LLM_FALLBACK_API_KEY`, `LLM_TIMEOUT_MS` (30000), `MAX_ITERACIONES` (25), `MAX_TOKENS_SESION` (400000), `MAX_MENSAJES_SESION` (60), `MAX_SESIONES_DIA` (200), `FECHA_REFERENCIA` (opcional).
+`PORT`, `DATA_DIR`, `ACCESS_KEY`, `ADMIN_KEY`, `IP_HASH_SALT`, `LLM_PROVIDER`, `LLM_MODEL`, `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_FALLBACK_PROVIDER`, `LLM_FALLBACK_MODEL`, `LLM_FALLBACK_API_KEY`, `LLM_TIMEOUT_MS` (30000), `MAX_ITERACIONES` (25), `MAX_TOKENS_SESION` (400000), `MAX_MENSAJES_SESION` (60), `MAX_SESIONES_DIA` (200), `FECHA_REFERENCIA` (opcional), `ALMACEN` (`archivo`|`upstash`), `UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN` (o `KV_REST_API_URL`/`KV_REST_API_TOKEN`, que inyecta la integración de Vercel), `MAX_DURACION_TURNO_MS` (270000), `COMPACTAR_HISTORIAL` (true), `MAX_CARACTERES_RESULTADO` (12000).
 
 ## 8. Stack fijado
 
-Bun 1.3.14 · TypeScript estricto (sin `any`) · Biome · zod 4.6.5 · Hono 4.13.9 · React 19 servido por el bundler de Bun (HTML imports) · `bun test` · Docker `oven/bun:1.3.14` · Fly.io (una máquina, volumen en `/data`).
+Bun 1.3.14 · TypeScript estricto (sin `any`) · Biome · zod 4.6.5 · Hono 4.13.9 · React 19 compilado con el bundler de Bun (`bun run build` → `dist/web`; HTML imports solo en desarrollo) · `bun test` · Vercel Hobby (runtime Bun `1.x` = 1.3.14, un proyecto por reto) + Upstash Redis · Docker `oven/bun:1.3.14` como alternativa.

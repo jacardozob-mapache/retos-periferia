@@ -61,12 +61,29 @@ export type DefinicionHerramienta<A extends z.ZodRawShape = z.ZodRawShape> = {
 
 // ─── Adaptador LLM ───────────────────────────────────────────────────────────
 
-export type LlamadaHerramienta = { id: string; nombre: string; argumentos: unknown }
+export type LlamadaHerramienta = {
+  id: string
+  nombre: string
+  argumentos: unknown
+  /**
+   * Metadatos opacos del proveedor que deben reenviarse con la llamada en el
+   * historial (p. ej. la `thought_signature` de Gemini 3 en `extra_content`).
+   * Se persisten en la sesión; solo el adaptador que los generó los interpreta.
+   */
+  extra?: Record<string, unknown>
+}
+
+/**
+ * Contenido nativo y opaco del proveedor que debe reenviarse tal cual en la
+ * siguiente llamada al MISMO proveedor (p. ej. bloques `thinking` de Anthropic
+ * o `thought_signature` de Gemini). Otros proveedores lo ignoran.
+ */
+export type ContenidoNativo = { proveedor: string; contenido: unknown }
 
 export type MensajeLLM =
   | { rol: "system"; contenido: string }
   | { rol: "user"; contenido: string }
-  | { rol: "assistant"; contenido: string; llamadas?: LlamadaHerramienta[] }
+  | { rol: "assistant"; contenido: string; llamadas?: LlamadaHerramienta[]; nativo?: ContenidoNativo }
   | { rol: "tool"; llamadaId: string; nombre: string; contenido: string }
 
 /** Herramienta tal como se le expone al modelo (JSON Schema generado desde zod). */
@@ -84,6 +101,10 @@ export type RespuestaLLM = {
   uso: UsoTokens
   proveedor: string
   modelo: string
+  /** Contenido nativo a conservar en el historial (ver `ContenidoNativo`). */
+  nativo?: ContenidoNativo
+  /** Posición (1, 2, …) del respaldo que respondió; ausente si respondió el principal. */
+  respaldo?: number
 }
 
 export type OpcionesEnvio = { signal?: AbortSignal; maxTokensSalida?: number }
@@ -159,6 +180,8 @@ export type RespuestaChat = {
   needsConfirmation: boolean
   pendiente: ConfirmacionPendiente | null
   uso: UsoTokens & { iteraciones: number }
+  /** Presente cuando el turno terminó por un error (proveedor LLM, límites): mensaje claro, igual a `reply`. */
+  error?: string
 }
 
 /**
