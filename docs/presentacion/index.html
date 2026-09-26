@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presentación — retos Perxia 2.0</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --panel: #ffffff; --text: #1c1f24; --muted: #5d6470;
+    --line: #e2e4e8; --accent: #0e7490; --ok: #15803d; --warn: #b45309; --bad: #b91c1c;
+    --head: #f1f3f5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1216; --panel: #171b21; --text: #e6e8eb; --muted: #9aa3ae;
+      --line: #2a3039; --accent: #38bdf8; --ok: #4ade80; --warn: #fbbf24; --bad: #f87171;
+      --head: #1e242c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 1080px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 1.7rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+  h2 { font-size: 1.15rem; margin: 40px 0 12px; }
+  h3 { font-size: 1rem; margin: 24px 0 8px; }
+  p.lead { color: var(--muted); margin: 0 0 28px; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px;
+  }
+  a.card { color: inherit; text-decoration: none; display: block; }
+  a.card:hover, a.card:focus-visible { border-color: var(--accent); outline: none; }
+  a.card strong { color: var(--accent); }
+  .card span { display: block; color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+  .stat b { display: block; font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+  .stat span { margin-top: 0; }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--head); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  code { font: 0.85em ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .si { color: var(--ok); font-weight: 600; }
+  .no { color: var(--bad); font-weight: 600; }
+  .conf { color: var(--warn); font-weight: 600; }
+  .nota { color: var(--muted); font-size: 0.85rem; margin-top: 8px; }
+  footer { color: var(--muted); font-size: 0.85rem; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Retos Perxia 2.0 — Periferia IT Group</h1>
+  <p class="lead">Tres agentes conversacionales sobre un núcleo común: arquitectura, forma de trabajo con sub-agentes y resultados reales de cada caso de prueba.</p>
+
+  <h2>Diagramas</h2>
+  <div class="grid">
+    <a class="card" href="arquitectura.html"><strong>Arquitectura de la solución</strong>
+      <span>Front React, API Hono sobre Bun, ciclo del agente con guarda de confirmación, herramientas, adaptador LLM con respaldo y almacén.</span></a>
+    <a class="card" href="flujo-desarrollo.html"><strong>Flujo de desarrollo con sub-agentes</strong>
+      <span>Análisis, propuestas y auditoría en paralelo, Ola 1 con 9 sub-agentes, decisiones del dueño, Ola 2 de integración y cierre.</span></a>
+  </div>
+
+  <h2>Cifras clave</h2>
+  <div class="grid">
+    <div class="card stat"><b>233</b><span>pruebas en <code>core/</code> (+76 del front)</span></div>
+    <div class="card stat"><b>102 · 117 · 99</b><span>pruebas en reto-01 · reto-02 · reto-03</span></div>
+    <div class="card stat"><b>16</b><span>casos resueltos: 4 solicitudes, 6 mensajes y 6 compras</span></div>
+    <div class="card stat"><b>16</b><span>sub-agentes: 3 propuestas, 1 auditoría, 9 en la Ola 1 y 3 en la Ola 2</span></div>
+  </div>
+  <p class="nota">Pruebas: salida de <code>bun test</code> en cada paquete, todas en verde (2026-09-26). Resultados: salida de <code>bun run demo</code> (sin modelo, fecha de ejecución 2026-09-03).</p>
+
+  <h2>Resultados por caso</h2>
+
+  <h3>Reto 01 · Registro como proveedor</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Caso</th><th>Formato</th><th>Campos</th><th>Llenos</th><th>Faltantes</th><th>Por confirmar</th><th>Listo para firma</th><th>Motivo</th></tr></thead>
+    <tbody>
+      <tr><td><code>co-industrias-delta</code></td><td>xlsx</td><td class="num">17</td><td class="num">17</td><td class="num">0</td><td class="num">0</td><td class="si">Sí</td><td>—</td></tr>
+      <tr><td><code>ec-corp-andina</code></td><td>pdf</td><td class="num">15</td><td class="num">13</td><td class="num">1</td><td class="num">1</td><td class="no">No</td><td>Falta el certificado de cumplimiento tributario; RUC por confirmar</td></tr>
+      <tr><td><code>hn-agroexport-sula</code></td><td>xlsx</td><td class="num">11</td><td class="num">9</td><td class="num">1</td><td class="num">1</td><td class="no">No</td><td>Parafiscales vencidos (2026-08-31); RTN por confirmar</td></tr>
+      <tr><td><code>pa-logistica-istmo</code></td><td>portal</td><td class="num">9</td><td class="num">8</td><td class="num">0</td><td class="num">1</td><td class="si">Sí</td><td>Portal no soportado: se genera <code>valores-portal.md</code>; RUC por confirmar</td></tr>
+    </tbody>
+  </table></div>
+  <p class="nota">Envío simulado de <code>ec-corp-andina</code>: sin confirmar responde <code>requiere_confirmacion</code> y no escribe nada; con confirmación escribe <code>ENVIO-SIMULADO.md</code>.</p>
+
+  <h3>Reto 02 · Registro de contratos vigentes</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Mensaje</th><th>Clasificación</th><th>Campos en revisión</th><th>Acción</th></tr></thead>
+    <tbody>
+      <tr><td><code>msg-001</code></td><td>nuevo CT-2026-015</td><td>—</td><td>Insertado y archivado</td></tr>
+      <tr><td><code>msg-002</code></td><td>nuevo CT-2026-016</td><td>—</td><td>Insertado y archivado</td></tr>
+      <tr><td><code>msg-003</code></td><td>actualización CT-2026-011</td><td>—</td><td>Actualizado (otrosí 01)</td></tr>
+      <tr><td><code>msg-004</code></td><td>duplicado CT-2026-012</td><td>—</td><td>Sin cambios: mismo valor y vigencia</td></tr>
+      <tr><td><code>msg-005</code></td><td>rechazado</td><td>—</td><td>Es una cotización (COT-2026-088), no un contrato</td></tr>
+      <tr><td><code>msg-006</code></td><td>nuevo CM-2026-03</td><td class="conf">valor, fecha_fin</td><td>Registrado solo tras confirmación humana</td></tr>
+    </tbody>
+  </table></div>
+  <p class="nota">Alertas con fecha 2026-09-03: 2 contratos vencen en ≤ 60 días, 4 pólizas no vigentes y 4 contratos registrados desde el corte.</p>
+
+  <h3>Reto 03 · Órdenes de compra SAP</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Solicitud</th><th>Apta</th><th>Bloqueos</th><th>Confirmaciones</th><th>Retroactiva</th><th>Resultado</th></tr></thead>
+    <tbody>
+      <tr><td><code>sol-001</code></td><td class="si">Sí</td><td>—</td><td>—</td><td>No</td><td>OC 4500000001 sin intervención; segunda ejecución idempotente</td></tr>
+      <tr><td><code>sol-002</code></td><td class="no">No</td><td>RC1</td><td>—</td><td>No</td><td>Sin OC: el proveedor no existe en el maestro</td></tr>
+      <tr><td><code>sol-003</code></td><td class="no">No</td><td>RC2, RC3</td><td>—</td><td>No</td><td>Sin OC: aprobador no autorizado y valor sobre el tope</td></tr>
+      <tr><td><code>sol-004</code></td><td class="si">Sí</td><td>—</td><td class="conf">RC5</td><td>No</td><td>OC 4500000002 tras confirmar (cotización 6 % sobre la solicitud)</td></tr>
+      <tr><td><code>sol-005</code></td><td class="si">Sí</td><td>—</td><td class="conf">RC8</td><td>Sí</td><td>OC 4500000003 tras confirmar (factura anterior a la solicitud)</td></tr>
+      <tr><td><code>sol-006</code></td><td class="si">Sí</td><td>—</td><td class="conf">RC6</td><td>No</td><td>OC 4500000004 tras confirmar el indicador de IVA C1</td></tr>
+    </tbody>
+  </table></div>
+
+  <footer>Fuentes de los diagramas en <code>fuentes/</code>; cómo regenerarlos en <code>README.md</code>.</footer>
+</main>
+</body>
+</html>

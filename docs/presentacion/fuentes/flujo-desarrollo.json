@@ -1,0 +1,250 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Cómo se construyeron los 3 retos en paralelo con sub-agentes",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "frontend": {
+          "label": "Orquestador"
+        },
+        "backend": {
+          "label": "Sub-agentes"
+        },
+        "security": {
+          "label": "Decisión humana"
+        },
+        "external": {
+          "label": "Entrega"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "diseno",
+        "label": "Diseño en paralelo",
+        "focus": [
+          "prd",
+          "paralelo",
+          "consolidacion"
+        ],
+        "note": "3 propuestas y 1 auditoría a la vez antes de congelar el contrato del núcleo."
+      },
+      {
+        "id": "olas",
+        "label": "Olas de construcción",
+        "focus": [
+          "consolidacion",
+          "ola1",
+          "ola2"
+        ],
+        "note": "Ola 1 con 9 sub-agentes a la vez; Ola 2 con 3 de integración."
+      },
+      {
+        "id": "humano",
+        "label": "Decisiones humanas",
+        "focus": [
+          "decisiones",
+          "ola1",
+          "cierre",
+          "entrega"
+        ],
+        "note": "El dueño decide despliegue y modelo durante la ola y aprueba la entrega."
+      }
+    ]
+  },
+  "lanes": [
+    {
+      "id": "dueno",
+      "label": "Dueño del proyecto"
+    },
+    {
+      "id": "orq",
+      "label": "Orquestador"
+    },
+    {
+      "id": "sub",
+      "label": "Sub-agentes en paralelo"
+    }
+  ],
+  "phases": [
+    {
+      "id": "f_diseno",
+      "label": "Análisis y diseño",
+      "fromCol": 0,
+      "toCol": 2
+    },
+    {
+      "id": "f_ola1",
+      "label": "Ola 1",
+      "fromCol": 3,
+      "toCol": 3,
+      "variant": "emphasis"
+    },
+    {
+      "id": "f_cierre",
+      "label": "Ola 2 y cierre",
+      "fromCol": 4,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "prd",
+    "paralelo",
+    "consolidacion",
+    "ola1",
+    "ola2",
+    "cierre",
+    "entrega"
+  ],
+  "nodes": [
+    {
+      "id": "prd",
+      "lane": "orq",
+      "col": 0,
+      "type": "frontend",
+      "label": "Análisis de 3 PRD",
+      "sublabel": "fixtures y trampas",
+      "width": 200
+    },
+    {
+      "id": "paralelo",
+      "lane": "sub",
+      "col": 1,
+      "type": "backend",
+      "label": "Diseño · 4 sub-agentes",
+      "sublabel": "3 propuestas + auditoría de skills",
+      "width": 200
+    },
+    {
+      "id": "consolidacion",
+      "lane": "orq",
+      "col": 2,
+      "type": "frontend",
+      "label": "Consolidación",
+      "sublabel": "stack común · núcleo congelado",
+      "width": 200
+    },
+    {
+      "id": "decisiones",
+      "lane": "dueno",
+      "col": 3,
+      "type": "security",
+      "label": "Decisiones del dueño",
+      "sublabel": "Vercel + Upstash · solo Gemini",
+      "width": 200
+    },
+    {
+      "id": "ola1",
+      "lane": "sub",
+      "col": 3,
+      "type": "backend",
+      "label": "Ola 1 · 9 sub-agentes",
+      "sublabel": "núcleo/infra · dominio · docs",
+      "width": 200
+    },
+    {
+      "id": "ola2",
+      "lane": "sub",
+      "col": 4,
+      "type": "backend",
+      "label": "Ola 2 · 3 sub-agentes",
+      "sublabel": "e2e · Gemini real · README",
+      "width": 200
+    },
+    {
+      "id": "cierre",
+      "lane": "orq",
+      "col": 5,
+      "type": "frontend",
+      "label": "Cierre",
+      "sublabel": "QA · CI · presentación",
+      "width": 200
+    },
+    {
+      "id": "entrega",
+      "lane": "dueno",
+      "col": 5,
+      "type": "external",
+      "label": "Entrega",
+      "sublabel": "correo + despliegue",
+      "width": 200
+    }
+  ],
+  "edges": [
+    {
+      "id": "prd-paralelo",
+      "from": "prd",
+      "to": "paralelo",
+      "variant": "emphasis"
+    },
+    {
+      "id": "paralelo-consolidacion",
+      "from": "paralelo",
+      "to": "consolidacion",
+      "variant": "emphasis"
+    },
+    {
+      "id": "consolidacion-ola1",
+      "from": "consolidacion",
+      "to": "ola1",
+      "variant": "emphasis"
+    },
+    {
+      "id": "decisiones-ola1",
+      "from": "decisiones",
+      "to": "ola1",
+      "label": "redirige",
+      "variant": "security"
+    },
+    {
+      "id": "ola1-ola2",
+      "from": "ola1",
+      "to": "ola2",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ola2-cierre",
+      "from": "ola2",
+      "to": "cierre",
+      "variant": "emphasis"
+    },
+    {
+      "id": "cierre-entrega",
+      "from": "cierre",
+      "to": "entrega",
+      "label": "aprueba",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Paralelismo",
+      "items": [
+        "Diseño: 3 propuestas + 1 auditoría a la vez",
+        "Ola 1: 9 sub-agentes en paralelo",
+        "Ola 2: 3 sub-agentes de integración"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Decisiones del dueño",
+      "items": [
+        "Fly.io → Vercel + Upstash Redis",
+        "Solo Gemini, capa gratuita",
+        "thought_signature verificado contra la API real"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Auditoría de skills",
+      "items": [
+        "16 skills aprobadas y fijadas a commit",
+        "Descartes: curl | sh, instrucciones remotas mutables, licencia"
+      ]
+    }
+  ]
+}

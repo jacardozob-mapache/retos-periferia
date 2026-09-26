@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Arquitectura de la solución — retos Perxia 2.0",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1300,
+      580
+    ],
+    "legend": {
+      "entries": {
+        "frontend": {
+          "label": "Front"
+        },
+        "backend": {
+          "label": "Backend"
+        },
+        "security": {
+          "label": "Control"
+        },
+        "database": {
+          "label": "Datos"
+        },
+        "external": {
+          "label": "Externo"
+        }
+      }
+    },
+    "views": [
+      {
+        "id": "turno",
+        "label": "Turno del agente",
+        "focus": [
+          "front",
+          "api",
+          "ciclo",
+          "guarda",
+          "registro",
+          "tools"
+        ],
+        "note": "Del mensaje del analista a la herramienta, pasando por la guarda de confirmación."
+      },
+      {
+        "id": "modelo",
+        "label": "Modelo y respaldo",
+        "focus": [
+          "ciclo",
+          "llm",
+          "gemini"
+        ],
+        "note": "Adaptador OpenAI-compatible con respaldo ante 429, 5xx o timeout."
+      },
+      {
+        "id": "estado",
+        "label": "Estado y uso",
+        "focus": [
+          "api",
+          "sesiones",
+          "almacen",
+          "front"
+        ],
+        "note": "Sesiones y registro de uso persistidos en Upstash o en archivo."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "front",
+      "type": "frontend",
+      "label": "Front React",
+      "sublabel": "Chat + panel /admin",
+      "brand": "react",
+      "pos": [
+        30,
+        100
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "API Hono · Bun",
+      "sublabel": "Llave, rate limit, SSE",
+      "pos": [
+        250,
+        100
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "ciclo",
+      "type": "backend",
+      "label": "Ciclo del agente",
+      "sublabel": "Topes y compactación",
+      "pos": [
+        470,
+        100
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "guarda",
+      "type": "security",
+      "label": "Guarda de confirmación",
+      "sublabel": "Solo la clave pendiente",
+      "pos": [
+        690,
+        100
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "registro",
+      "type": "backend",
+      "label": "Registro zod",
+      "sublabel": "Herramientas → JSON Schema",
+      "pos": [
+        910,
+        100
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "tools",
+      "type": "backend",
+      "label": "Herramientas del reto",
+      "sublabel": "proveedor · contratos · oc",
+      "pos": [
+        1130,
+        100
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "sesiones",
+      "type": "backend",
+      "label": "Sesiones y uso",
+      "sublabel": "Eventos de auditoría",
+      "pos": [
+        250,
+        270
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "llm",
+      "type": "backend",
+      "label": "Adaptador LLM",
+      "sublabel": "Respaldo 429/5xx",
+      "pos": [
+        470,
+        270
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "dominio",
+      "type": "backend",
+      "label": "Dominio puro",
+      "sublabel": "Reglas y normalización",
+      "pos": [
+        1130,
+        270
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "almacen",
+      "type": "database",
+      "label": "Upstash Redis",
+      "sublabel": "o archivo (local/Docker)",
+      "brand": "redis",
+      "pos": [
+        250,
+        440
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "gemini",
+      "type": "external",
+      "label": "Gemini",
+      "sublabel": "3.8-flash → 3.5-flash-lite",
+      "brand": "google-gemini",
+      "pos": [
+        470,
+        440
+      ],
+      "size": [
+        140,
+        66
+      ]
+    },
+    {
+      "id": "fixtures",
+      "type": "database",
+      "label": "fixtures/ → out/",
+      "sublabel": "Solo lectura → escritura",
+      "pos": [
+        1130,
+        440
+      ],
+      "size": [
+        140,
+        66
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "core/ · núcleo común, copia sincronizada en cada reto",
+      "wraps": [
+        "front",
+        "api",
+        "ciclo",
+        "guarda",
+        "registro",
+        "sesiones",
+        "llm"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "reto-0X/ · ×3 en Vercel",
+      "wraps": [
+        "tools",
+        "dominio",
+        "fixtures"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "front-api",
+      "from": "front",
+      "to": "api",
+      "label": "HTTPS · SSE",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-ciclo",
+      "from": "api",
+      "to": "ciclo",
+      "label": "turno"
+    },
+    {
+      "id": "ciclo-guarda",
+      "from": "ciclo",
+      "to": "guarda",
+      "label": "llamada"
+    },
+    {
+      "id": "guarda-registro",
+      "from": "guarda",
+      "to": "registro",
+      "label": "aprobada",
+      "variant": "security"
+    },
+    {
+      "id": "registro-tools",
+      "from": "registro",
+      "to": "tools",
+      "label": "execute"
+    },
+    {
+      "id": "tools-dominio",
+      "from": "tools",
+      "to": "dominio",
+      "label": "reglas puras",
+      "labelAt": [
+        1200,
+        180
+      ]
+    },
+    {
+      "id": "dominio-fixtures",
+      "from": "dominio",
+      "to": "fixtures",
+      "label": "lee y escribe",
+      "labelAt": [
+        1200,
+        350
+      ]
+    },
+    {
+      "id": "ciclo-llm",
+      "from": "ciclo",
+      "to": "llm",
+      "label": "mensajes + herramientas",
+      "labelAt": [
+        540,
+        180
+      ]
+    },
+    {
+      "id": "llm-gemini",
+      "from": "llm",
+      "to": "gemini",
+      "label": "OpenAI-compatible",
+      "variant": "emphasis",
+      "labelAt": [
+        540,
+        350
+      ]
+    },
+    {
+      "id": "api-sesiones",
+      "from": "api",
+      "to": "sesiones",
+      "label": "sesión + eventos",
+      "labelAt": [
+        320,
+        180
+      ]
+    },
+    {
+      "id": "sesiones-almacen",
+      "from": "sesiones",
+      "to": "almacen",
+      "label": "puerto de almacén",
+      "labelAt": [
+        320,
+        350
+      ]
+    },
+    {
+      "id": "sesiones-admin",
+      "from": "sesiones",
+      "to": "front",
+      "label": "/api/admin/uso",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Despliegue",
+      "items": [
+        "3 proyectos Vercel Hobby, uno por reto",
+        "Upstash Redis compartido, prefijo por reto",
+        "Docker oven/bun:1.3.14 como alternativa"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Confirmación humana",
+      "items": [
+        "La impone el backend, no solo el prompt",
+        "Se consume al usarse y exige la misma clave"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Núcleo común",
+      "items": [
+        "Se edita solo en core/ y bun run sync lo copia",
+        "CI falla si alguna copia difiere"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Modelo y ciclo",
+      "items": [
+        "gemini-3.8-flash con respaldo gemini-3.5-flash-lite",
+        "Reenvía el thought_signature de cada llamada",
+        "Topes: 25 iteraciones, 270 s por turno, 400k tokens por sesión"
+      ]
+    }
+  ]
+}
