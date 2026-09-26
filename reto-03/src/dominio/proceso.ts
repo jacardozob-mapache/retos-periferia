@@ -77,7 +77,7 @@ function verificarReenvio(
   if (alterados.length > 0) {
     throw new ErrorNegocio(
       `El ${nombre} recibido no coincide con la fuente en: ${alterados.slice(0, 8).join(", ")}. ` +
-        `Los valores solo pueden salir de las herramientas: vuelva a llamar oc_leer_paquete y reenvíe el ${nombre} sin cambios.`,
+        `Los valores solo pueden salir de las herramientas: vuelva a llamar la herramienta solo con el caso, sin ${nombre}.`,
       "PAQUETE_ALTERADO",
     )
   }
@@ -269,8 +269,26 @@ function sinConfirmadoPor(payload: unknown): unknown {
 }
 
 /**
- * HU-5. Orden de controles: bloqueos → integridad del payload (hash) → idempotencia →
- * confirmación → proveedor activo en SAP → creación. Cada intento deja una fila en control.csv.
+ * Compara el payload que envió el modelo con el recalculado (sha256 sobre JSON canónico).
+ * Devuelve el motivo del rechazo, o null si es idéntico.
+ */
+function verificarPayload(payloadRecibido: unknown, c: OrdenCalculada): string | null {
+  const recibido = sinConfirmadoPor(extraerPayload(payloadRecibido))
+  const esObjeto = recibido !== null && typeof recibido === "object"
+  const hashRecibido = esObjeto ? hashCanonico(recibido) : "(payload no es un objeto)"
+  if (hashRecibido === c.payload_sha256) return null
+  const rutas = esObjeto ? diferencias(recibido, c.orden).slice(0, 8) : ["(todo)"]
+  return (
+    "No se creó la OC: el payload recibido no coincide con el recalculado desde la fuente " +
+    `(sha256 esperado ${c.payload_sha256}, recibido ${hashRecibido}; difiere en ${rutas.join(", ")}). ` +
+    "Llame oc_crear solo con el caso (sin payload) o con el payload idéntico de oc_construir_payload."
+  )
+}
+
+/**
+ * HU-5. Orden de controles: bloqueos → integridad del payload (hash, si el modelo lo envió) →
+ * idempotencia → confirmación → proveedor activo en SAP → creación. A SAP va SIEMPRE la orden
+ * recalculada desde la fuente, nunca la recibida. Cada intento deja una fila en control.csv.
  */
 export async function crearOrdenCaso(
   ctx: ContextoProceso,
@@ -295,18 +313,11 @@ export async function crearOrdenCaso(
     return { tipo: "rechazo", mensaje: errorNoApta(s.solicitud_id, v).message }
   }
   const c = await calcularOrden(ctx.directory, caso, preparado)
-  const recibido = sinConfirmadoPor(extraerPayload(payloadRecibido))
-  const hashRecibido = recibido && typeof recibido === "object" ? hashCanonico(recibido) : "(payload vacío)"
-  if (hashRecibido !== c.payload_sha256) {
-    await registrar("payload_alterado")
-    const rutas =
-      recibido && typeof recibido === "object" ? diferencias(recibido, c.orden).slice(0, 8) : ["(todo)"]
-    return {
-      tipo: "rechazo",
-      mensaje:
-        `No se creó la OC: el payload recibido no coincide con el recalculado desde la fuente ` +
-        `(sha256 esperado ${c.payload_sha256}, recibido ${hashRecibido}; difiere en ${rutas.join(", ")}). ` +
-        "Vuelva a llamar oc_construir_payload y envíe su payload sin modificaciones.",
+  if (payloadRecibido !== undefined && payloadRecibido !== null) {
+    const rechazo = verificarPayload(payloadRecibido, c)
+    if (rechazo) {
+      await registrar("payload_alterado")
+      return { tipo: "rechazo", mensaje: rechazo }
     }
   }
 

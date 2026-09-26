@@ -22,7 +22,9 @@ export async function resolverRutaSegura(directory: string, ruta: string): Promi
   if (!dentroDe(base, destino)) throw rechazo
   const real = await realpath(destino).catch(() => null)
   if (real === null) throw new ErrorNegocio(`No existe el archivo "${ruta}".`, "RUTA_INVALIDA")
-  if (!dentroDe(await realpath(base), real)) throw rechazo
+  // En el servidor, `fixtures/` del workspace es un enlace (solo lectura) que crea el núcleo.
+  const raices = [await realpath(base), await realpath(resolve(base, "fixtures")).catch(() => null)]
+  if (!raices.some((r) => r !== null && dentroDe(r, real))) throw rechazo
   return real
 }
 

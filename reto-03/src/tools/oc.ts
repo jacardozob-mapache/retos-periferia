@@ -19,7 +19,9 @@ const paquete = z
       .describe("Solicitud normalizada"),
   })
   .optional()
-  .describe("Paquete exactamente como lo devolvió oc_leer_paquete; la herramienta lo contrasta con la fuente")
+  .describe(
+    "Opcional; normalmente se omite. Si se envía, debe ser idéntico al que devolvió oc_leer_paquete (se contrasta con la fuente)",
+  )
 
 const derivado = z
   .looseObject({ valor: z.string().optional().describe("Valor derivado") })
@@ -64,7 +66,9 @@ export const construir_payload = definirHerramienta({
         proveedor_nit: derivado,
       })
       .optional()
-      .describe("Objeto derivados exactamente como lo devolvió oc_validar"),
+      .describe(
+        "Opcional; normalmente se omite. Si se envía, debe ser idéntico al campo derivados de oc_validar (se contrasta con la fuente)",
+      ),
   },
   async execute(args, ctx) {
     return ejecutarHerramienta("oc_construir_payload", ctx, { caso: args.caso }, async () => {
@@ -92,7 +96,7 @@ export const generar_evidencia = definirHerramienta({
 
 export const crear = definirHerramienta({
   description:
-    "Crea la orden de compra en SAP con el payload exacto de oc_construir_payload; si hay confirmaciones pendientes y falta confirmado=true, solo registra la solicitud y pide confirmación; es idempotente por solicitud_id.",
+    "Crea la orden de compra de un caso en SAP (verifica el payload contra la fuente); si hay confirmaciones pendientes y falta confirmado=true, solo registra la solicitud y pide confirmación; es idempotente por solicitud_id.",
   args: {
     caso,
     payload: z
@@ -102,7 +106,10 @@ export const crear = definirHerramienta({
           .optional()
           .describe("Referencia de la orden"),
       })
-      .describe("Campo payload devuelto por oc_construir_payload, sin ninguna modificación"),
+      .optional()
+      .describe(
+        "Campo payload de oc_construir_payload, idéntico. Opcional: si se omite, la herramienta reconstruye el payload desde la fuente",
+      ),
     confirmado: z
       .boolean()
       .optional()

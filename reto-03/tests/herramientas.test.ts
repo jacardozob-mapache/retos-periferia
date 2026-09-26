@@ -100,7 +100,7 @@ describe("errores legibles (HU-6) sobre copias temporales", () => {
       oc.construir_payload.execute({ caso: "sol-001" }, roto),
       oc.generar_evidencia.execute({ caso: "sol-001" }, roto),
       oc.crear.execute({ caso: "sol-001", payload: {} }, roto),
-      oc.crear.execute({ caso: "sol-001", payload: null as unknown as Record<string, unknown> }, ctx),
+      oc.crear.execute({ caso: "sol-001", payload: "texto" as unknown as Record<string, unknown> }, ctx),
       oc.leer_excel.execute({ ruta: "no.xlsx" }, roto),
     ]
     for (const json of await Promise.all(llamadas)) expect(resultado(json).ok).toBe(false)
@@ -127,6 +127,12 @@ describe("integridad: el modelo no puede alterar valores", () => {
     ).toBe("4500000001")
     await rm(join(ctx.directory, "out"), { recursive: true })
     expect(resultado(await oc.crear.execute({ caso: "sol-001", payload: construido }, ctx)).ok).toBe(true)
+  })
+  test("sin payload, oc_crear reconstruye la orden desde la fuente (turno de confirmación compactado)", async () => {
+    const r = datos<{ numero_oc: string }>(await oc.crear.execute({ caso: "sol-001" }, ctx))
+    expect(r.numero_oc).toBe("4500000001")
+    const [registro] = await ordenes()
+    expect(registro?.orden.posiciones[0]?.precio_unitario).toBe(95000)
   })
   test("paquete alterado en validar → rechazo con la ruta alterada", async () => {
     const p = datos<{ solicitud: Record<string, unknown> }>(
@@ -258,6 +264,18 @@ describe("oc_leer_excel (P1)", () => {
     )
     expect(r.encabezados).toEqual(["solicitud_id", "cantidad", "valor_unitario"])
     expect(r.filas).toEqual([{ solicitud_id: "SOL-X", cantidad: 3, valor_unitario: 1500 }])
+  })
+  test("lee a través de fixtures/ enlazado (workspace de sesión del servidor)", async () => {
+    const { mkdtemp, symlink } = await import("node:fs/promises")
+    const { tmpdir } = await import("node:os")
+    const workspace = await mkdtemp(join(tmpdir(), "reto03-ws-"))
+    await writeFile(join(ctx.directory, "fixtures/libro.xlsx"), crearXlsx([["a"], [1]]))
+    await symlink(join(ctx.directory, "fixtures"), join(workspace, "fixtures"), "dir")
+    const r = datos<{ filas: unknown[] }>(
+      await oc.leer_excel.execute({ ruta: "fixtures/libro.xlsx" }, { ...ctx, directory: workspace }),
+    )
+    expect(r.filas).toEqual([{ a: 1 }])
+    await rm(workspace, { recursive: true, force: true })
   })
   test("no permite salir del espacio de trabajo ni leer otros formatos", async () => {
     expect(error(await oc.leer_excel.execute({ ruta: "../fuera.xlsx" }, ctx))).toContain("no es válida")
