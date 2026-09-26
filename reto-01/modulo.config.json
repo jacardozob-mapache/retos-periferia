@@ -1,0 +1,6 @@
+{
+  "archivoHerramientas": "proveedor",
+  "skill": "registro-proveedor",
+  "descripcionAgente": "Agente que prepara el registro de Periferia IT Group como proveedor ante clientes: lee la solicitud, llena el formulario (Excel, PDF o valores para portal) solo con datos del repositorio maestro, arma el paquete para firma y simula el envío únicamente con confirmación explícita. Úsalo cuando digan \"procesa la solicitud de registro de proveedor\", \"llena el formulario de proveedor del cliente\", \"arma el paquete para firma\", \"qué campos faltan en el registro\" o \"qué soportes debo actualizar\".",
+  "descripcionSkill": "Conocimiento del proceso de registro como proveedor de Periferia IT Group: flujo, mapeo de campos contra el maestro, identificador tributario por país (NIT, RUC, RTN), reglas de datos bancarios, vigencia de soportes y qué hace el humano. Úsala cuando pregunten \"cómo se registra Periferia como proveedor\", \"qué identificador tributario pide Ecuador, Panamá u Honduras\", \"cuándo un soporte está vencido\", \"qué bloquea el listo para firma\" o \"cómo se llena un portal de proveedores\"."
+}
