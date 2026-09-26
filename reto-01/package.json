@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "bun --hot src/server.ts",
     "start": "bun src/server.ts",
+    "build": "bun run src/core/http/construir-front.ts",
     "demo": "bun run demo.ts",
     "test": "bun test",
     "typecheck": "tsc -p .",

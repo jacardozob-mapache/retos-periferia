@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "bun",
+  "bunVersion": "1.x",
+  "installCommand": "bun install --frozen-lockfile",
+  "buildCommand": "bun run build",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- .",
+  "regions": ["iad1"],
+  "functions": {
+    "src/server.ts": {
+      "maxDuration": 300,
+      "includeFiles": "{agent,src/knowledge,fixtures,dist/web,reto-03/agent,reto-03/src/knowledge,reto-03/fixtures,reto-03/dist/web}/**"
+    }
+  }
+}

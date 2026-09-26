@@ -61,6 +61,7 @@ const esquemaEntorno = z.object({
   LLM_TIMEOUT_MS: entero(30_000, 1_000, 600_000),
   TOOL_TIMEOUT_MS: entero(20_000, 100, 600_000),
   MAX_ITERACIONES: entero(25, 1, 100),
+  MAX_DURACION_TURNO_MS: entero(270_000, 5_000, 3_600_000),
   MAX_TOKENS_SESION: entero(400_000, 1_000, 50_000_000),
   MAX_MENSAJES_SESION: entero(60, 1, 10_000),
   MAX_SESIONES_DIA: entero(200, 1, 1_000_000),
@@ -109,6 +110,8 @@ export type ConfigEntorno = {
   llmTimeoutMs: number
   toolTimeoutMs: number
   maxIteraciones: number
+  /** Duración máxima de un turno (Vercel Hobby corta la función a los 300 s). */
+  maxDuracionTurnoMs: number
   maxTokensSesion: number
   maxMensajesSesion: number
   maxSesionesDia: number
@@ -242,6 +245,7 @@ export function leerConfiguracion(entorno: Entorno = process.env): ConfigEntorno
     llmTimeoutMs: e.LLM_TIMEOUT_MS,
     toolTimeoutMs: e.TOOL_TIMEOUT_MS,
     maxIteraciones: e.MAX_ITERACIONES,
+    maxDuracionTurnoMs: e.MAX_DURACION_TURNO_MS,
     maxTokensSesion: e.MAX_TOKENS_SESION,
     maxMensajesSesion: e.MAX_MENSAJES_SESION,
     maxSesionesDia: e.MAX_SESIONES_DIA,

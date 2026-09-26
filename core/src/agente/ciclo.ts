@@ -37,6 +37,10 @@ export type LimitesTurno = {
   maxCaracteresResultado: number
   /** Resultados de turnos anteriores → resumen + nota (los del turno actual van completos). */
   compactarHistorial: boolean
+  /** Duración máxima del turno (Vercel Hobby corta la función a los 300 s). */
+  maxDuracionTurnoMs: number
+  /** Timeout de una llamada al modelo: no se inicia otra si no alcanza antes del tope. */
+  llmTimeoutMs: number
 }
 
 export const LIMITES_POR_DEFECTO: LimitesTurno = {
@@ -46,6 +50,8 @@ export const LIMITES_POR_DEFECTO: LimitesTurno = {
   toolTimeoutMs: 20_000,
   maxCaracteresResultado: 12_000,
   compactarHistorial: true,
+  maxDuracionTurnoMs: 270_000,
+  llmTimeoutMs: 30_000,
 }
 
 /** Eventos internos para el registro de uso (no van al front). */
@@ -85,6 +91,8 @@ export type OpcionesTurno = {
   observar?: (evento: EventoInterno) => void
   limites?: Partial<LimitesTurno>
   signal?: AbortSignal
+  /** Reloj en ms (inyectable en pruebas). Por defecto `performance.now`. */
+  reloj?: () => number
 }
 
 type EstadoTurno = {
@@ -95,6 +103,10 @@ type EstadoTurno = {
   observar: (e: EventoInterno) => void
   uso: UsoTokens
   llamadas: LlamadaVisible[]
+  reloj: () => number
+  inicio: number
+  /** Señal de tiempo restante de la llamada al modelo en curso. */
+  limiteLlamada?: AbortSignal
 }
 
 // ─── Mensajes claros ─────────────────────────────────────────────────────────
@@ -218,7 +230,7 @@ async function consultarModelo(t: EstadoTurno): Promise<RespuestaLLM> {
   const r = await t.o.adaptador.enviar(
     [{ rol: "system", contenido: t.o.systemPrompt }, ...t.o.sesion.mensajes],
     t.o.herramientas.definicionesLLM(),
-    { signal: t.o.signal },
+    { signal: senalDelTurno(t) },
   )
   const s = t.o.sesion
   t.uso.entrada += r.uso.entrada
@@ -245,17 +257,34 @@ async function consultarModelo(t: EstadoTurno): Promise<RespuestaLLM> {
   return r
 }
 
+function restanteMs(t: EstadoTurno): number {
+  return t.limites.maxDuracionTurnoMs - (t.reloj() - t.inicio)
+}
+
+/** No se inicia otra llamada al modelo si su timeout no alcanza antes del tope del turno. */
+function sinTiempoParaOtraLlamada(t: EstadoTurno): boolean {
+  return restanteMs(t) < t.limites.llmTimeoutMs
+}
+
+/** Señal que aborta la llamada al modelo si excede el tiempo restante del turno (o si el cliente cancela). */
+function senalDelTurno(t: EstadoTurno): AbortSignal {
+  const limite = AbortSignal.timeout(Math.max(1, Math.floor(restanteMs(t))))
+  t.limiteLlamada = limite
+  return t.o.signal ? AbortSignal.any([t.o.signal, limite]) : limite
+}
+
 /** Respuesta determinista al alcanzar el tope: lo que se tiene y lo que falta, sin otra llamada al modelo. */
 export function respuestaPorTope(
   maxIteraciones: number,
   llamadas: LlamadaVisible[],
   textoModelo: string,
+  encabezado = `Alcancé el tope de ${maxIteraciones} iteraciones de este turno antes de terminar.`,
 ): string {
   const recientes = llamadas.slice(-10)
   const hechas = recientes.filter((l) => l.ok).map((l) => `- ${l.nombre}: ${l.resumen}`)
   const falta = recientes.filter((l) => !l.ok).map((l) => `- ${l.nombre}: ${l.resumen}`)
   return [
-    `Alcancé el tope de ${maxIteraciones} iteraciones de este turno antes de terminar.`,
+    encabezado,
     textoModelo.trim() ? `\n${textoModelo.trim()}` : "",
     `\n**Lo que ya tengo:**\n${hechas.length > 0 ? hechas.join("\n") : "- Ningún resultado exitoso todavía."}`,
     `\n**Lo que falta o falló:**\n${falta.length > 0 ? falta.join("\n") : "- Completar los pasos restantes del proceso."}`,
@@ -284,10 +313,20 @@ export function compactarHistorial(s: Sesion): void {
 
 type Cierre = { reply: string; error?: string; iteraciones: number }
 
+function cierrePorDuracion(t: EstadoTurno, iteraciones: number): Cierre {
+  const segundos = Math.round(t.limites.maxDuracionTurnoMs / 1000)
+  const encabezado = `Alcancé el tiempo máximo de este turno (${segundos} s) antes de terminar.`
+  const reply = respuestaPorTope(t.limites.maxIteraciones, t.llamadas, "", encabezado)
+  t.o.sesion.mensajes.push({ rol: "assistant", contenido: reply })
+  t.observar({ tipo: "error", origen: "limite", mensaje: encabezado })
+  return { reply, iteraciones }
+}
+
 async function bucle(t: EstadoTurno): Promise<Cierre> {
   const { maxIteraciones, maxTokensSesion } = t.limites
   const s = t.o.sesion
   for (let i = 1; i <= maxIteraciones; i++) {
+    if (sinTiempoParaOtraLlamada(t)) return cierrePorDuracion(t, i - 1)
     if (s.uso.entrada + s.uso.salida >= maxTokensSesion) {
       const error = `Esta sesión alcanzó su presupuesto de tokens durante el turno. Crea una sesión nueva para continuar.`
       t.observar({ tipo: "error", origen: "limite", mensaje: error })
@@ -298,6 +337,7 @@ async function bucle(t: EstadoTurno): Promise<Cierre> {
     try {
       r = await consultarModelo(t)
     } catch (e) {
+      if (t.limiteLlamada?.aborted || restanteMs(t) <= 0) return cierrePorDuracion(t, i)
       const error = mensajeErrorProveedor(e)
       const detalle = e instanceof Error ? e.message : undefined
       t.observar({ tipo: "error", origen: "llm", mensaje: error, ...(detalle ? { detalle } : {}) })
@@ -336,6 +376,7 @@ export async function ejecutarTurno(o: OpcionesTurno): Promise<RespuestaChat> {
   const limites: LimitesTurno = { ...LIMITES_POR_DEFECTO, ...o.limites }
   const emitir = o.emitir ?? (() => {})
   const observar = o.observar ?? (() => {})
+  const reloj = o.reloj ?? (() => performance.now())
   const s = o.sesion
   emitir({ tipo: "inicio", sessionId: s.id })
 
@@ -373,6 +414,8 @@ export async function ejecutarTurno(o: OpcionesTurno): Promise<RespuestaChat> {
     observar,
     uso: { entrada: 0, salida: 0 },
     llamadas: [],
+    reloj,
+    inicio: reloj(),
   }
   const cierre = await bucle(t)
 

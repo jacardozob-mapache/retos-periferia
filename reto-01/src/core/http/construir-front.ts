@@ -24,6 +24,7 @@ export async function construirFront(raiz: string): Promise<ResultadoConstruccio
     target: "browser",
     minify: true,
     publicPath: "/",
+    define: { "process.env.NODE_ENV": '"production"' },
     naming: {
       entry: "[dir]/[name].[ext]",
       chunk: "assets/[name]-[hash].[ext]",

@@ -4,6 +4,12 @@
   "type": "module",
   "scripts": {
     "sync": "bun run scripts/sync-core.ts",
-    "verificar-core": "bun run scripts/sync-core.ts --verificar"
+    "verificar-core": "bun run scripts/sync-core.ts --verificar",
+    "instalar": "bun run scripts/tareas.ts instalar",
+    "verificar": "bun run scripts/tareas.ts verificar",
+    "exportar": "bun run scripts/exportar-reto.ts",
+    "dev:01": "bun run --cwd reto-01 dev",
+    "dev:02": "bun run --cwd reto-02 dev",
+    "dev:03": "bun run --cwd reto-03 dev"
   }
 }

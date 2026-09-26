@@ -85,9 +85,10 @@ RUN mkdir -p /data && chown 1000:1000 /data
 
 EXPOSE 3000
 
-# Chequeo de salud del contenedor contra el endpoint público /api/health.
+# Chequeo de salud contra el endpoint público /api/health. Pasa por el mismo
+# punto de entrada para que también corra sin privilegios.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD ["bun", "-e", "fetch('http://127.0.0.1:' + (process.env.PORT || '3000') + '/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
+  CMD ["/usr/local/bin/iniciar-reto", "bun", "-e", "fetch('http://127.0.0.1:' + (process.env.PORT || '3000') + '/api/health').then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
 
 ENTRYPOINT ["/usr/local/bin/iniciar-reto"]
 CMD ["bun", "src/server.ts"]

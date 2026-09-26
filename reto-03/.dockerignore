@@ -1,0 +1,44 @@
+# Contexto de build mínimo: solo lo que el servidor necesita en ejecución
+# (package.json, bun.lock, tsconfig.json, bunfig.toml si existe, agent/, src/,
+# web/ y fixtures/). Todo lo demás queda fuera de la imagen.
+
+# Dependencias y artefactos generados (se reinstalan y dist/web se compila
+# dentro de la imagen)
+**/node_modules
+out/
+data/
+dist/
+coverage/
+**/*.log
+**/.DS_Store
+
+# Secretos y credenciales: nunca entran al contexto de build
+**/.env
+**/.env.*
+**/.npmrc
+**/*.pem
+**/*.key
+**/*.p12
+
+# Control de versiones, CI y herramientas del monorepo
+.git/
+.github/
+.claude/
+entrega/
+.vscode/
+.idea/
+
+# Documentación, pruebas y artefactos que no se usan en ejecución
+docs/
+tests/
+modulo/
+demo.ts
+README.md
+SOLUCION.md
+LICENSE
+biome.json
+
+# Archivos de despliegue (no hacen parte de la aplicación)
+Dockerfile
+.dockerignore
+vercel.json

@@ -344,6 +344,8 @@ function limitesDe(e: ConfigEntorno): LimitesTurno {
     toolTimeoutMs: e.toolTimeoutMs,
     maxCaracteresResultado: e.maxCaracteresResultado,
     compactarHistorial: e.compactarHistorial,
+    maxDuracionTurnoMs: e.maxDuracionTurnoMs,
+    llmTimeoutMs: e.llmTimeoutMs,
   }
 }
 

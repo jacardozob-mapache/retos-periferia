@@ -41,12 +41,17 @@ const MAX_USER_AGENT = 300
 
 // ─── Visitante ───────────────────────────────────────────────────────────────
 
-/** IP real: `fly-client-ip`, luego el primer valor de `x-forwarded-for`, luego la del socket. */
+/**
+ * IP real: `fly-client-ip` (Fly.io), luego el primer valor de `x-forwarded-for`
+ * (Vercel lo fija en su borde), luego `x-real-ip`, luego la del socket.
+ */
 export function ipReal(headers: Headers, ipSocket?: string | null): string {
   const fly = headers.get("fly-client-ip")?.trim()
   if (fly) return fly
   const reenviada = headers.get("x-forwarded-for")?.split(",")[0]?.trim()
   if (reenviada) return reenviada
+  const real = headers.get("x-real-ip")?.trim()
+  if (real) return real
   return ipSocket?.trim() || "desconocida"
 }
 

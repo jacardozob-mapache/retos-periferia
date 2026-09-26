@@ -6,7 +6,7 @@
 # monta ahí un volumen para conservar sesiones y registro de uso.
 # Idéntica en los tres retos salvo la etiqueta org.opencontainers.image.title.
 # Se construye con el directorio del reto como contexto:
-#   docker build -t perxia-reto-01 reto-01
+#   docker build -t perxia-reto-03 reto-03
 #
 # Bases fijadas por digest (índices multi-arquitectura de oven/bun:1.3.14 y de
 # su variante -slim, la misma versión de Bun con menos paquetes del sistema).
@@ -34,7 +34,7 @@ RUN NODE_ENV=production bun run build
 # ─── Etapa 3: ejecución ──────────────────────────────────────────────────────
 FROM oven/bun:1.3.14-slim@sha256:d56a2534ffd262e92c12fd3249d3924d296d97086da773f821d7d0477435ea04 AS runtime
 
-LABEL org.opencontainers.image.title="perxia-reto-01" \
+LABEL org.opencontainers.image.title="perxia-reto-03" \
       org.opencontainers.image.source="https://github.com/jacardozob-mapache/retos-periferia" \
       org.opencontainers.image.description="Agente conversacional del reto técnico Perxia 2.0 (Periferia IT Group)"
 
