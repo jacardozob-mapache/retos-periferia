@@ -14,6 +14,8 @@
  * y al persistir solo se envían los archivos de `out/` que cambiaron.
  * El token nunca aparece en errores ni logs.
  */
+
+import { mkdtempSync } from "node:fs"
 import { rm } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join, resolve } from "node:path"
@@ -232,7 +234,7 @@ export class AlmacenUpstash implements AlmacenDatos {
 
   private dirWorkspace(sessionId: string): string {
     validarNombre("clave", sessionId)
-    return join(this.o.dirTemporal ?? join(tmpdir(), "retos"), this.o.reto, sessionId, "workspace")
+    return join(this.o.dirTemporal ?? baseTemporal(), this.o.reto, sessionId, "workspace")
   }
 
   async leerWorkspace(sessionId: string): Promise<ArchivoSnapshot[]> {
@@ -298,4 +300,12 @@ function agruparEnLotes(archivos: ArchivoSnapshot[]): ArchivoSnapshot[][] {
   }
   if (actual.length > 0) lotes.push(actual)
   return lotes
+}
+
+let base: string | undefined
+
+/** Carpeta temporal del proceso creada con `mkdtemp` (nombre impredecible, permisos 0700). */
+function baseTemporal(): string {
+  base ??= mkdtempSync(join(tmpdir(), "retos-"))
+  return base
 }

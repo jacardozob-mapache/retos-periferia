@@ -162,7 +162,7 @@ describe("contratos_leer_pdf (P1)", () => {
   })
 
   test("rechaza un enlace simbólico que apunta fuera del workspace", async () => {
-    const externo = join(tmpdir(), `reto02-externo-${process.pid}.pdf`)
+    const externo = join(await mkdtemp(join(tmpdir(), "reto02-externo-")), "externo.pdf")
     await writeFile(externo, pdfConTexto("secreto"))
     await symlink(externo, join(ctx.directory, "enlace.pdf"))
     const r = leer(await herramientas.leer_pdf.execute({ ruta: "enlace.pdf" }, ctx))

@@ -114,7 +114,7 @@ export function calcularAlertas(maestro: FilaMaestro[], historial: EntradaHistor
 
 function tabla(encabezados: string[], filas: string[][]): string {
   if (filas.length === 0) return "_Ninguno._"
-  const celda = (s: string) => s.replace(/\|/g, "\\|")
+  const celda = (s: string) => s.replace(/\\/g, "\\\\").replace(/\|/g, "\\|")
   return [
     `| ${encabezados.join(" | ")} |`,
     `|${encabezados.map(() => "---").join("|")}|`,

@@ -1,6 +1,9 @@
 /** Redis mínimo en memoria que habla el protocolo REST de Upstash (para pruebas). */
 import type { Fetch } from "../src/llm/http"
 
+/** Error de comando que el simulador devuelve tal cual (como Redis real). */
+class ErrorComandoSimulado extends Error {}
+
 type Valor =
   | { tipo: "s"; v: string }
   | { tipo: "set"; v: Set<string> }
@@ -108,7 +111,7 @@ export class RedisSimulado {
         return 0
       }
       default:
-        throw new Error(`ERR comando no soportado ${cmd}`)
+        throw new ErrorComandoSimulado(`ERR comando no soportado ${cmd}`)
     }
   }
 
@@ -116,7 +119,7 @@ export class RedisSimulado {
     try {
       return { result: this.ejecutar(c) }
     } catch (e) {
-      return { error: e instanceof Error ? e.message : String(e) }
+      return { error: e instanceof ErrorComandoSimulado ? e.message : "ERR comando inválido" }
     }
   }
 

@@ -1,4 +1,4 @@
-import { appendFile, mkdir, stat } from "node:fs/promises"
+import { mkdir, open } from "node:fs/promises"
 import { dirname, join } from "node:path"
 import { conCandado } from "./candado"
 
@@ -44,10 +44,6 @@ export async function registrarIntento(
   const ruta = join(directory, RUTA_CONTROL)
   await conCandado(`control:${ruta}`, async () => {
     await mkdir(dirname(ruta), { recursive: true })
-    const existe = await stat(ruta).then(
-      () => true,
-      () => false,
-    )
     const fila = [
       intento.solicitud_id,
       intento.resultado,
@@ -59,7 +55,14 @@ export async function registrarIntento(
     ]
       .map(celdaCsv)
       .join(",")
-    const encabezado = existe ? "" : `${COLUMNAS_CONTROL.join(",")}\n`
-    await appendFile(ruta, `${encabezado}${fila}\n`, "utf8")
+    // Un solo descriptor en modo append: el tamaño se lee del mismo archivo que se escribe (sin carrera).
+    const archivo = await open(ruta, "a")
+    try {
+      const vacio = (await archivo.stat()).size === 0
+      const encabezado = vacio ? `${COLUMNAS_CONTROL.join(",")}\n` : ""
+      await archivo.appendFile(`${encabezado}${fila}\n`, "utf8")
+    } finally {
+      await archivo.close()
+    }
   })
 }
