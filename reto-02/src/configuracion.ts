@@ -1,6 +1,5 @@
 import { join } from "node:path"
 import type { ConfiguracionReto } from "./core/contratos"
-import { iniciarServidor } from "./core/http/servidor"
 import * as herramientas from "./tools/contratos"
 
 export const configuracion: ConfiguracionReto = {
