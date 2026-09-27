@@ -9,7 +9,8 @@
   "functions": {
     "src/server.ts": {
       "maxDuration": 300,
-      "includeFiles": "{agent,src/knowledge,fixtures,dist/web,reto-01/agent,reto-01/src/knowledge,reto-01/fixtures,reto-01/dist/web}/**"
+      "includeFiles": "{agent,src/knowledge,fixtures,dist/web,node_modules,reto-01/agent,reto-01/src/knowledge,reto-01/fixtures,reto-01/dist/web,reto-01/node_modules}/**",
+      "excludeFiles": "{node_modules,reto-01/node_modules}/{typescript,@biomejs,@types,.bin,.cache}/**"
     }
   }
 }
