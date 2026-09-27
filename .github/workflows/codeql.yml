@@ -1,0 +1,67 @@
+# Análisis estático de seguridad con CodeQL.
+#
+# - javascript-typescript: el código de core/ y de cada reto (sin compilar:
+#   build-mode none). Las copias sincronizadas reto-0X/src/core y reto-0X/web se
+#   excluyen porque son idénticas a core/ (se analizan una sola vez, en core/).
+# - actions: los propios workflows de .github/workflows (inyección, permisos,
+#   disparadores privilegiados).
+# Los resultados quedan en Security → Code scanning.
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Lunes 11:17 UTC (06:17 en Bogotá).
+    - cron: "17 11 * * 1"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  analizar:
+    name: CodeQL (${{ matrix.lenguaje }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read # descargar el código
+      actions: read # CodeQL lee metadatos del workflow (requerido en repos privados)
+      security-events: write # publicar resultados en Security → Code scanning
+    strategy:
+      fail-fast: false
+      matrix:
+        lenguaje: [javascript-typescript, actions]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Inicializar CodeQL
+        uses: github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        with:
+          languages: ${{ matrix.lenguaje }}
+          build-mode: none
+          queries: security-extended
+          config: |
+            paths-ignore:
+              - "**/node_modules/**"
+              - "**/fixtures/**"
+              - "**/out/**"
+              - "**/data/**"
+              - "dist/**"
+              - ".claude/**"
+              - "reto-01/src/core/**"
+              - "reto-02/src/core/**"
+              - "reto-03/src/core/**"
+              - "reto-01/web/**"
+              - "reto-02/web/**"
+              - "reto-03/web/**"
+      - name: Analizar
+        uses: github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        with:
+          category: /language:${{ matrix.lenguaje }}

@@ -1,0 +1,71 @@
+# Actualizaciones automáticas de dependencias (PR semanales, agrupados).
+#
+# - bun: el ecosistema de Dependabot para proyectos con bun.lock (paquetes de
+#   npm). Si algún día se cambia a package-lock.json, usar "npm".
+#   core/ y los tres retos deben conservar las mismas versiones: las cuatro
+#   carpetas comparten grupos, así las actualizaciones llegan juntas. Tras
+#   aceptar un PR que toque core/, corre `bun run sync` (CI lo exige).
+# - docker: los digest fijados de oven/bun en los Dockerfile.
+# - github-actions: los SHA fijados en .github/workflows (respeta el
+#   comentario # vX.Y.Z).
+# cooldown: espera unos días antes de proponer una versión recién publicada,
+# para no adoptar el mismo día un paquete comprometido.
+version: 2
+
+updates:
+  - package-ecosystem: bun
+    directories:
+      - /core
+      - /reto-01
+      - /reto-02
+      - /reto-03
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Bogota
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+    groups:
+      dependencias:
+        patterns: ["*"]
+        update-types: [minor, patch]
+      mayores:
+        patterns: ["*"]
+        update-types: [major]
+
+  - package-ecosystem: docker
+    directories:
+      - /reto-01
+      - /reto-02
+      - /reto-03
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Bogota
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "docker"
+    groups:
+      imagen-base:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Bogota
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "ci"
+    groups:
+      acciones:
+        patterns: ["*"]

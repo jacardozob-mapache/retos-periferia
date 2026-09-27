@@ -1,0 +1,159 @@
+# Integración continua del monorepo.
+#
+# - nucleo: las copias de core/ dentro de cada reto son idénticas (bun run verificar-core).
+# - core:   pruebas, tipos, lint y auditoría de dependencias del núcleo común.
+# - retos:  por cada reto, la misma cadena que exige el PRD, el build del front
+#           (el mismo que corre Vercel), la imagen Docker (build + prueba de
+#           humo) y el paquete de entrega exportado.
+#
+# El despliegue lo hace la integración Git de Vercel (un proyecto por reto);
+# verificar-despliegue.yml comprueba después los links de producción.
+#
+# Endurecimiento: acciones fijadas por SHA de commit, permisos mínimos
+# (deny-all arriba, contents: read por job), checkout sin credenciales
+# persistidas, sin pull_request_target y sin expresiones ${{ }} de datos
+# controlables por terceros dentro de run:.
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  BUN_VERSION: "1.3.14"
+
+jobs:
+  nucleo:
+    name: Copias del núcleo sincronizadas
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - name: Verificar copias de core/ en los tres retos
+        run: bun run verificar-core
+
+  core:
+    name: Núcleo común (core/)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: core
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - name: Instalar dependencias (lockfile congelado)
+        run: bun install --frozen-lockfile
+      - name: Auditar dependencias (avisos altos y críticos)
+        run: bun audit --audit-level=high
+      - name: Pruebas
+        run: bun test
+      - name: Tipos
+        run: bun run typecheck
+      - name: Lint
+        run: bun run lint
+
+  retos:
+    name: ${{ matrix.reto }}
+    needs: nucleo
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        reto: [reto-01, reto-02, reto-03]
+    env:
+      RETO: ${{ matrix.reto }}
+    defaults:
+      run:
+        working-directory: ${{ matrix.reto }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Instalar dependencias (lockfile congelado)
+        run: bun install --frozen-lockfile
+      - name: Auditar dependencias (avisos altos y críticos)
+        run: bun audit --audit-level=high
+      - name: Tipos
+        run: bun run typecheck
+      - name: Lint
+        run: bun run lint
+      - name: Pruebas
+        run: bun test
+      - name: Demo sin modelo
+        run: bun run demo
+      - name: Módulo reutilizable sincronizado con la aplicación
+        run: bun run modulo -- --verificar
+      - name: Build del front (el mismo comando que ejecuta Vercel)
+        run: bun run build
+
+      - name: Construir imagen Docker
+        run: docker build --pull --tag "perxia-${RETO}:ci" .
+      - name: Prueba de humo del contenedor
+        run: |
+          set -euo pipefail
+          docker run --detach --name "humo-${RETO}" --publish 127.0.0.1:3000:3000 \
+            --env ACCESS_KEY=ci-llave-acceso \
+            --env ADMIN_KEY=ci-llave-admin \
+            --env IP_HASH_SALT=ci-sal \
+            --env LLM_API_KEY=ci-sin-clave-real \
+            "perxia-${RETO}:ci"
+          for _ in $(seq 1 30); do
+            if salud="$(curl --silent --fail http://127.0.0.1:3000/api/health)"; then
+              echo "Salud: ${salud}"
+              echo "${salud}" | jq -e '.ok == true' > /dev/null
+              # uid del proceso del servidor (bun src/server.ts), sea o no el PID 1.
+              uids="$(docker exec "humo-${RETO}" sh -c 'for d in /proc/[0-9]*; do [ "$(tr "\0" " " < "$d/cmdline" 2>/dev/null)" = "bun src/server.ts " ] && awk "/^Uid:/ {print \$2}" "$d/status"; done; true' | sort -u)"
+              if [ -z "${uids}" ] || printf '%s\n' "${uids}" | grep -qx 0; then
+                echo "::error::El servidor no corre o corre como root dentro del contenedor (uid: ${uids:-ninguno})"
+                exit 1
+              fi
+              echo "El servidor corre con uid ${uids}"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::/api/health no respondió en 60 s"
+          docker logs "humo-${RETO}"
+          exit 1
+      - name: Detener contenedor
+        if: always()
+        run: docker rm --force "humo-${RETO}" > /dev/null 2>&1 || true
+
+      - name: Exportar paquete de entrega (instala, corre demo y pruebas en limpio)
+        working-directory: .
+        run: bun run exportar "${RETO}"
+      - name: Publicar paquete de entrega como artefacto
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: entrega-${{ matrix.reto }}
+          path: dist/${{ matrix.reto }}-*.zip
+          if-no-files-found: error
+          retention-days: 14

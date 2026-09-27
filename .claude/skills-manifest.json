@@ -1,0 +1,978 @@
+{
+  "generated": "2026-09-26",
+  "staging_root": "/tmp/claude-0/-home-user-mapache-brain/6fe2b1ad-ba9d-56bd-a4ad-de928baeb0be/scratchpad/skills-retos",
+  "install_hint": "Instaladas en .claude/skills/ (verbatim). render-blueprints y render-docker excluidas: el despliegue elegido es Fly.io.",
+  "integrity": "Cada archivo lleva su sha256; git_tree_sha permite verificar contra upstream con 'git rev-parse <commit>:<path_in_repo>'.",
+  "skills": [
+    {
+      "name": "test-driven-development",
+      "category": "fullstack",
+      "source_repo": "https://github.com/obra/superpowers",
+      "path_in_repo": "skills/test-driven-development",
+      "commit_sha": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "git_tree_sha": "847144cf0824095922c0d4875648b9fa74877e1a",
+      "license": "MIT",
+      "license_file": "licenses/obra-superpowers.LICENSE",
+      "verdict": "segura",
+      "notes": "Solo Markdown (SKILL.md + writing-good-tests.md). Sin scripts. Referencia cruzada a 'superpowers:writing-skills' (no incluida; no afecta).",
+      "staged_path": "skills/test-driven-development",
+      "files": [
+        {
+          "path": "skills/test-driven-development/SKILL.md",
+          "sha256": "64b03fce4aee5a97a93160cea8111f3ba13a17b7c001db4bd5836d67fd10705d"
+        },
+        {
+          "path": "skills/test-driven-development/writing-good-tests.md",
+          "sha256": "51471c853306ff92ca8bb41dcaea05f31c0e46b03651f8f3c99754b7172f4ae1"
+        }
+      ]
+    },
+    {
+      "name": "systematic-debugging",
+      "category": "fullstack",
+      "source_repo": "https://github.com/obra/superpowers",
+      "path_in_repo": "skills/systematic-debugging",
+      "commit_sha": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "git_tree_sha": "9a48dfda84bf339cba4b03fd803ba0dca2e158e3",
+      "license": "MIT",
+      "license_file": "licenses/obra-superpowers.LICENSE",
+      "verdict": "segura_con_observaciones",
+      "notes": "find-polluter.sh (bash local: recorre archivos de test y ejecuta 'npm test <archivo>', sin red). condition-based-waiting-example.ts es código de ejemplo que no se importa. test-pressure-*.md y test-academic.md son escenarios de evaluación de la propia skill (juego de roles con 'IMPORTANT: This is a real scenario'), no instrucciones ocultas. Referencias a 'superpowers:test-driven-development' y 'superpowers:verification-before-completion' (ambas incluidas con su nombre corto). Issue #1283 (cerrado): la palabra 'Ultra-think' del cuerpo activaba un recordatorio de Claude Code.",
+      "staged_path": "skills/systematic-debugging",
+      "files": [
+        {
+          "path": "skills/systematic-debugging/CREATION-LOG.md",
+          "sha256": "c24733a5b1821bd6bed1fc950261f0b9f4e90097e0bbb96459d8179713730789"
+        },
+        {
+          "path": "skills/systematic-debugging/SKILL.md",
+          "sha256": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787"
+        },
+        {
+          "path": "skills/systematic-debugging/condition-based-waiting-example.ts",
+          "sha256": "40ae5ebe497fdf310200e43fe986552546d0a22837c0d39e855db1cfd33eb88e"
+        },
+        {
+          "path": "skills/systematic-debugging/condition-based-waiting.md",
+          "sha256": "e89fec8400d6cd50f43407cec9fab50976ba4d55d0ec2eb51c0bd68036b54c26"
+        },
+        {
+          "path": "skills/systematic-debugging/defense-in-depth.md",
+          "sha256": "1e175fb86fc357e58c6aebf5441e481e1b7868b4380c0456b63a17eefbd18ba7"
+        },
+        {
+          "path": "skills/systematic-debugging/find-polluter.sh",
+          "sha256": "dd7b8f13c4cc2a24b33ff87b18da9248f3e1c80a085c3316224f69ff0fa5c43c"
+        },
+        {
+          "path": "skills/systematic-debugging/root-cause-tracing.md",
+          "sha256": "75b933b6a8c40bdb2031b10f21654395b56ec6ab6bc7b018c18d3fe57aeb7fb8"
+        },
+        {
+          "path": "skills/systematic-debugging/test-academic.md",
+          "sha256": "fe2ba480d78ac0d686dc025f41c2a32a43d642bf533f91b0c6053a04d35d6486"
+        },
+        {
+          "path": "skills/systematic-debugging/test-pressure-1.md",
+          "sha256": "0b6a915db0054577819834c79be9eb614e97bddba10d73768e1fbe91cfed048a"
+        },
+        {
+          "path": "skills/systematic-debugging/test-pressure-2.md",
+          "sha256": "b2030aeffba07050e8ad573ddf87486457c4a016a786bb326235bebd856f2016"
+        },
+        {
+          "path": "skills/systematic-debugging/test-pressure-3.md",
+          "sha256": "96b50a52e2c7989c9cf20fb752c47c1e9a3a70dc362f8f7989f8f5b64dac7708"
+        }
+      ]
+    },
+    {
+      "name": "verification-before-completion",
+      "category": "fullstack",
+      "source_repo": "https://github.com/obra/superpowers",
+      "path_in_repo": "skills/verification-before-completion",
+      "commit_sha": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+      "git_tree_sha": "a4cb0b69aaefeab540947a7f1642bdaad810e37a",
+      "license": "MIT",
+      "license_file": "licenses/obra-superpowers.LICENSE",
+      "verdict": "segura",
+      "notes": "Un solo SKILL.md. Sin scripts.",
+      "staged_path": "skills/verification-before-completion",
+      "files": [
+        {
+          "path": "skills/verification-before-completion/SKILL.md",
+          "sha256": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3"
+        }
+      ]
+    },
+    {
+      "name": "api-and-interface-design",
+      "category": "fullstack",
+      "source_repo": "https://github.com/addyosmani/agent-skills",
+      "path_in_repo": "skills/api-and-interface-design",
+      "commit_sha": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "git_tree_sha": "f7eefe1133c8540d00f279a171053cc9551ec5c4",
+      "license": "MIT",
+      "license_file": "licenses/addyosmani-agent-skills.LICENSE",
+      "verdict": "segura",
+      "notes": "Un solo SKILL.md. Contract-first, errores consistentes, validación con zod en la frontera. Menciona la skill 'deprecation-and-migration' (no incluida).",
+      "staged_path": "skills/api-and-interface-design",
+      "files": [
+        {
+          "path": "skills/api-and-interface-design/SKILL.md",
+          "sha256": "5dafd0c44a3aabf11cae5bcb34f6fcc24dfa5c01ba6e0d3176bce997f4d68bc8"
+        }
+      ]
+    },
+    {
+      "name": "docker-project-foundations",
+      "category": "infraestructura",
+      "source_repo": "https://github.com/docker/skills",
+      "path_in_repo": "skills/docker-project-foundations",
+      "commit_sha": "ddbf34bfd8be2fed3fe69dddd6c7590b42d45320",
+      "git_tree_sha": "14eb864f89eb52d3769528b3e6b2835911edbb4b",
+      "license": "Apache-2.0",
+      "license_file": "licenses/docker-skills.LICENSE",
+      "verdict": "segura",
+      "notes": "scripts/verify-setup.sh: comprueba que existan .dockerignore/Dockerfile/compose.yaml y corre 'docker compose config --quiet' (local, sin red). Incluye agents/openai.yaml y skill.yaml (metadatos, inocuos para Claude Code). Menciones a ~/.ssh y .npmrc son instrucciones para NO filtrarlos (BuildKit secrets).",
+      "staged_path": "skills/docker-project-foundations",
+      "files": [
+        {
+          "path": "skills/docker-project-foundations/SKILL.md",
+          "sha256": "68e19cc50687085fd0ce255867182425fa43e2bec07fa44ed47612d1cd564245"
+        },
+        {
+          "path": "skills/docker-project-foundations/agents/openai.yaml",
+          "sha256": "53926c60bab62fff24885d5e86c0210c332273b56f2cdd91de065de1b8e1327b"
+        },
+        {
+          "path": "skills/docker-project-foundations/assets/Dockerfile.simple",
+          "sha256": "3aff7f2ce6b7b7a50a876d97dc89db10fa66ba591ee36694431c2d723cf8e60d"
+        },
+        {
+          "path": "skills/docker-project-foundations/assets/compose-dev.yaml",
+          "sha256": "ff7265593ccbac9669448a0a1ac81e84ba30ec6b133d39137a42bb42901cdd1e"
+        },
+        {
+          "path": "skills/docker-project-foundations/assets/dockerignore-example",
+          "sha256": "7e7794ca86a6ff6e8205fa693cdaa1182d7d6821c10152657be51a1b0be2a9e1"
+        },
+        {
+          "path": "skills/docker-project-foundations/checks/verification.md",
+          "sha256": "a6296fc1dd4b83ed6bf84085e34d860ee2b064d641455b4e7d84c3170515bc53"
+        },
+        {
+          "path": "skills/docker-project-foundations/references/project-structure.md",
+          "sha256": "f5f6ead3005323a59c461e4655f83a8268577d784fa5d4db153d7ead9b854851"
+        },
+        {
+          "path": "skills/docker-project-foundations/scripts/verify-setup.sh",
+          "sha256": "42d6ed0e7696533fd9f94a1c4269e2e424f8728aabe07d7a36d9d8188cd961a2"
+        },
+        {
+          "path": "skills/docker-project-foundations/skill.yaml",
+          "sha256": "37e53621e694bf4cf3f75598db816f9a07b5a10963e69dfc1514057174dd0d0b"
+        }
+      ]
+    },
+    {
+      "name": "docker-build-strategies",
+      "category": "infraestructura",
+      "source_repo": "https://github.com/docker/skills",
+      "path_in_repo": "skills/docker-build-strategies",
+      "commit_sha": "ddbf34bfd8be2fed3fe69dddd6c7590b42d45320",
+      "git_tree_sha": "245219a31cbc6f493ef924bfeec408e5e2224c4d",
+      "license": "Apache-2.0",
+      "license_file": "licenses/docker-skills.LICENSE",
+      "verdict": "segura",
+      "notes": "scripts/verify-build.sh: 'docker build' + 'docker images' + 'docker inspect' sobre el proyecto actual. Assets: Dockerfiles de ejemplo (Node 22 alpine, multi-stage, usuario no root). Última release etiquetada v0.3.0 es anterior a este commit; se fija al SHA auditado.",
+      "staged_path": "skills/docker-build-strategies",
+      "files": [
+        {
+          "path": "skills/docker-build-strategies/SKILL.md",
+          "sha256": "53b1643e4f6df6200aef9bf2a5344acc69ec844658486b68b7b23bc7e699b078"
+        },
+        {
+          "path": "skills/docker-build-strategies/agents/openai.yaml",
+          "sha256": "9fc985ee4a18fefaf4e50e078f3469f80f60713ae87698303a2a9d95f3b91176"
+        },
+        {
+          "path": "skills/docker-build-strategies/assets/Dockerfile.go",
+          "sha256": "b8b842514244eb847195622a64e83dc4960d9013bba7021a049c6d4aa8785e18"
+        },
+        {
+          "path": "skills/docker-build-strategies/assets/Dockerfile.nodejs",
+          "sha256": "81a975dedd2de2de8d9f516d914b9ac17f1dc2062b3929bfd016bb61d5fcd9a9"
+        },
+        {
+          "path": "skills/docker-build-strategies/assets/Dockerfile.python",
+          "sha256": "79e7bd72e7af5bffdf35bfee6523b899a48f499f804c8d1ce74babf773e3371a"
+        },
+        {
+          "path": "skills/docker-build-strategies/assets/dockerignore-example",
+          "sha256": "c6a9a826899d82de2203ae47821bb08eb878b5370ac3cb92013f1ab9259bd500"
+        },
+        {
+          "path": "skills/docker-build-strategies/checks/verification.md",
+          "sha256": "adc3adb28bfc8e87762f1b7fcd9390bfcad93ae7645d4698157db9aaa0e2a5bd"
+        },
+        {
+          "path": "skills/docker-build-strategies/references/layer-caching.md",
+          "sha256": "6115ea74c6a7a690150b0f4792bd083eeeabcf2e3bf6de401efa44602b9ddd59"
+        },
+        {
+          "path": "skills/docker-build-strategies/references/multi-stage-builds.md",
+          "sha256": "97452c896d728c930c6fbbc8b5e8b1aff755046cb0d47cc3161b33c29ff03349"
+        },
+        {
+          "path": "skills/docker-build-strategies/scripts/verify-build.sh",
+          "sha256": "a5d4638ba0c4313b0987d3f5e58d60659a6d53f07eff5d37efc419c1c6e4660e"
+        },
+        {
+          "path": "skills/docker-build-strategies/skill.yaml",
+          "sha256": "1aa86c7f9037a90927285aee46fabd14909ad3bd4a91dc29d9aca40a39f9f94c"
+        }
+      ]
+    },
+    {
+      "name": "frontend-ui-engineering",
+      "category": "front",
+      "source_repo": "https://github.com/addyosmani/agent-skills",
+      "path_in_repo": "skills/frontend-ui-engineering",
+      "commit_sha": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "git_tree_sha": "8fdd24f2b93c198e4973f4008d694929a6082406",
+      "license": "MIT",
+      "license_file": "licenses/addyosmani-agent-skills.LICENSE",
+      "verdict": "segura_con_observaciones",
+      "notes": "Un solo SKILL.md (componentes, estados, WCAG 2.1 AA). Depende de '../../references/accessibility-checklist.md' (fuera de la carpeta de la skill en el repo original): se deja en references/ de staging y debe copiarse a .claude/references/.",
+      "staged_path": "skills/frontend-ui-engineering",
+      "files": [
+        {
+          "path": "skills/frontend-ui-engineering/SKILL.md",
+          "sha256": "549044e9bd8d7fe993ce8e5c0d2b0f5465650676dc15805329973f936179eb1e"
+        }
+      ]
+    },
+    {
+      "name": "webapp-testing",
+      "category": "front",
+      "source_repo": "https://github.com/anthropics/skills",
+      "path_in_repo": "skills/webapp-testing",
+      "commit_sha": "33375500bcea98d610eb30ce10ac4e59b89c390d",
+      "git_tree_sha": "5ffb7dc66b9fd4c25c3e400a4c00da99a349b714",
+      "license": "Apache-2.0",
+      "license_file": "skills/webapp-testing/LICENSE.txt (incluido en la carpeta de la skill)",
+      "verdict": "segura_con_observaciones",
+      "notes": "scripts/with_server.py: lanza los comandos de servidor que le pase el agente con subprocess(shell=True), espera el puerto en localhost y corre la automatización; sin red externa. El SKILL.md pide ejecutar los scripts 'como caja negra' sin leer su código: aquí se leyeron y auditaron; mantener esa auditoría al subir de SHA. Requiere Playwright para Python (el proyecto es TS). Los ejemplos escriben en /mnt/user-data/outputs y /tmp.",
+      "staged_path": "skills/webapp-testing",
+      "files": [
+        {
+          "path": "skills/webapp-testing/LICENSE.txt",
+          "sha256": "bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362"
+        },
+        {
+          "path": "skills/webapp-testing/SKILL.md",
+          "sha256": "51b7349e77ec63b7744a6f63647e7566a0b4d2e301121cc10e8c2113af6556a2"
+        },
+        {
+          "path": "skills/webapp-testing/examples/console_logging.py",
+          "sha256": "ea46877289acb82da7e7ce59d0bc37c8977cd57e2a006d0c88d7a1c625bf95da"
+        },
+        {
+          "path": "skills/webapp-testing/examples/element_discovery.py",
+          "sha256": "d63c89604a22f8845d724e95dda45db49b1bf57c25ce0a83afbb7b8da3d402f0"
+        },
+        {
+          "path": "skills/webapp-testing/examples/static_html_automation.py",
+          "sha256": "9d533aafb875ee3ab8b8ebf8f5b9003ac8d999da3d09b285cce252e623140064"
+        },
+        {
+          "path": "skills/webapp-testing/scripts/with_server.py",
+          "sha256": "b0dcf4918935b795f4eda9821579b9902119235ff4447f687a30286e7d0925fd"
+        }
+      ]
+    },
+    {
+      "name": "frontend-design",
+      "category": "ux_ui",
+      "source_repo": "https://github.com/anthropics/skills",
+      "path_in_repo": "skills/frontend-design",
+      "commit_sha": "33375500bcea98d610eb30ce10ac4e59b89c390d",
+      "git_tree_sha": "d79e2a5bb4df4a386c2adcdd9ab8709bba28c3f6",
+      "license": "Apache-2.0",
+      "license_file": "skills/frontend-design/LICENSE.txt (incluido en la carpeta de la skill)",
+      "verdict": "segura",
+      "notes": "Solo SKILL.md + LICENSE.txt (Apache-2.0). Dirección visual intencional y anti-plantilla. Complemento: emilkowalski/skills (ya instalada en otro repo del usuario).",
+      "staged_path": "skills/frontend-design",
+      "files": [
+        {
+          "path": "skills/frontend-design/LICENSE.txt",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "skills/frontend-design/SKILL.md",
+          "sha256": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3"
+        }
+      ]
+    },
+    {
+      "name": "ci-cd-and-automation",
+      "category": "ci_cd",
+      "source_repo": "https://github.com/addyosmani/agent-skills",
+      "path_in_repo": "skills/ci-cd-and-automation",
+      "commit_sha": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "git_tree_sha": "34db321777a17e268ac425f0f7f2501dda55c955",
+      "license": "MIT",
+      "license_file": "licenses/addyosmani-agent-skills.LICENSE",
+      "verdict": "segura_con_observaciones",
+      "notes": "Un solo SKILL.md. Los YAML de ejemplo usan acciones por tag (@v4) y 'npx vercel': combinarla con github-actions-hardening (pin por SHA, permissions mínimos). Adaptar npm -> bun si se usa Bun.",
+      "staged_path": "skills/ci-cd-and-automation",
+      "files": [
+        {
+          "path": "skills/ci-cd-and-automation/SKILL.md",
+          "sha256": "a6ed8ed56456b01ff8314c44eefc69897d9905ae4e06bb2b7036286efb79b5f0"
+        }
+      ]
+    },
+    {
+      "name": "github-actions-hardening",
+      "category": "ci_cd",
+      "source_repo": "https://github.com/github/awesome-copilot",
+      "path_in_repo": "skills/github-actions-hardening",
+      "commit_sha": "6c4d33b9cfca967a28bb2962ef4d55e4a384c88c",
+      "git_tree_sha": "25d75a622f5f8c034be5b25bf6585850d6f7fcd7",
+      "license": "MIT",
+      "license_file": "licenses/github-awesome-copilot.LICENSE",
+      "verdict": "segura_con_observaciones",
+      "notes": "Solo Markdown (SKILL.md + 5 references). Contenido de alta calidad (inyección ${{ }}, pull_request_target, pin por SHA, permissions, OIDC). Observación de procedencia: repo 'community-contributed' bajo la org github; esta skill tiene 1 commit de 1 autor (2026-06-16).",
+      "staged_path": "skills/github-actions-hardening",
+      "files": [
+        {
+          "path": "skills/github-actions-hardening/SKILL.md",
+          "sha256": "31a8e7483d978e6267941edefebbe42aaa946bb3d43c9095aa3db343d4a8ff06"
+        },
+        {
+          "path": "skills/github-actions-hardening/references/injection.md",
+          "sha256": "ebd6ef8d39ba6f1cd3dc13051e6ed4163d1d2ba36518cf0f7393836a211e58ff"
+        },
+        {
+          "path": "skills/github-actions-hardening/references/permissions-and-tokens.md",
+          "sha256": "7272d00b20cf99c6fcbf34346f76730907c00701aef44bb9cfb7ab3eecac336b"
+        },
+        {
+          "path": "skills/github-actions-hardening/references/report-format.md",
+          "sha256": "3ecd2442e173bc001f858747873349be7c6c77050470b87ae516647908b1e86e"
+        },
+        {
+          "path": "skills/github-actions-hardening/references/supply-chain.md",
+          "sha256": "f66f613dbd732ce87c1e76b88208efde8feae3ffe5a3ab405cde4ce3df66f605"
+        },
+        {
+          "path": "skills/github-actions-hardening/references/triggers-and-privilege.md",
+          "sha256": "465f3f76517e9f5374a73e30f46cb47e1fe62ce9fd81f782808a3abbb2df2756"
+        }
+      ]
+    },
+    {
+      "name": "security-and-hardening",
+      "category": "seguridad",
+      "source_repo": "https://github.com/addyosmani/agent-skills",
+      "path_in_repo": "skills/security-and-hardening",
+      "commit_sha": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "git_tree_sha": "79b5adb3e84ab5934e3d4b893f9de8fc7b11ffdb",
+      "license": "MIT",
+      "license_file": "licenses/addyosmani-agent-skills.LICENSE",
+      "verdict": "segura_con_observaciones",
+      "notes": "SKILL.md + references/hardening-patterns.md. Incluye OWASP Top 10 y OWASP LLM Top 10 (prompt injection, salida del modelo como no confiable, tope de tokens). Depende de '../../references/security-checklist.md' (fuera de la carpeta): se deja en references/ de staging.",
+      "staged_path": "skills/security-and-hardening",
+      "files": [
+        {
+          "path": "skills/security-and-hardening/SKILL.md",
+          "sha256": "2e3fc60eed5aba97fe416f3f3c9317fdb014a682925ec70a733c3ff99e4b9858"
+        },
+        {
+          "path": "skills/security-and-hardening/references/hardening-patterns.md",
+          "sha256": "d8ba58cad151aeca4804e48fc768240af0dd6b0ecddd07fbf24a1562140ba97a"
+        }
+      ]
+    },
+    {
+      "name": "supply-chain-risk-auditor",
+      "category": "seguridad",
+      "source_repo": "https://github.com/trailofbits/skills",
+      "path_in_repo": "plugins/supply-chain-risk-auditor/skills/supply-chain-risk-auditor",
+      "commit_sha": "0cc1c73a5e96749ab32d7ea5e14892fafa6972ae",
+      "git_tree_sha": "954cc68e05e24a2a14447b60d1e8946b53323b1b",
+      "license": "CC-BY-SA-4.0",
+      "license_file": "licenses/trailofbits-skills.LICENSE",
+      "verdict": "segura_con_observaciones",
+      "notes": "Scripts Python solo-stdlib (collect.py, sources.py, model.py, render.py + tests). Hacen HTTP a api.osv.dev, registry.npmjs.org, api.npmjs.org, pypi.org, proxy.golang.org, api.deps.dev, api.github.com y api.scorecard.dev enviando SOLO nombres/versiones de dependencias. Lee el token de 'gh auth token' y lo envía únicamente a api.github.com (Authorization: Bearer). Caché en el tmp del sistema con verificación de dueño. No instala ni ejecuta dependencias. allowed-tools incluye Bash. Requiere uv. Licencia CC-BY-SA-4.0 (atribución; share-alike si se modifica).",
+      "staged_path": "skills/supply-chain-risk-auditor",
+      "files": [
+        {
+          "path": "skills/supply-chain-risk-auditor/SKILL.md",
+          "sha256": "a1254b7f8d3a1731a9a7e1f9cd6c67b59cf84ed6ef7c7fb455db9a14c528ceb4"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/agents/openai.yaml",
+          "sha256": "7d79ce0a77aaa1e2c72939b02b285b13a84d9da85ffb965a9d1489c358cd27ab"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/assets/trail-of-bits-mark.svg",
+          "sha256": "4bf74c789b38dcf6ad762c136b6832363d27ae19fbaa9a18ec18d66ecce6ca05"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/scripts/collect.py",
+          "sha256": "fd75cffad628980a6da521b5d3a40fb5dd16c5bb9ad63a25245e5208d08abff7"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/scripts/model.py",
+          "sha256": "78a20954b76e81216991b57453ceddbdb867035a0d6993b98cfa05a7f8d008d3"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/scripts/pyproject.toml",
+          "sha256": "a79ec30039ce3bc90544b9d833f7edc128232821575736f659d2b2ca0a601f3b"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/scripts/render.py",
+          "sha256": "9d6091645c8a8edf5c50d24bd70ff881efa30b920d93b46ea1775ee2dd328bc7"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/scripts/sources.py",
+          "sha256": "4eb66952dca285b4790d1193b39f240e8015025ee054a215f4c696cbba2478e2"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/scripts/test_collect.py",
+          "sha256": "ea4f25bdab0add75d500b22ba5eb9f993d3695d974cd3f92b418f5cff07e00da"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/scripts/test_model.py",
+          "sha256": "92059fe937c50f1502d71df2ddc4f123e8e2647fc0f4f7b270727ef9a2004f5c"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/scripts/test_render.py",
+          "sha256": "319970fd010d6bf5fbf79b595e8fc918c5e74645b718f495f2479aef3ea8cc16"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/scripts/test_sources.py",
+          "sha256": "5c0a993d747e3ed29972272a18a14dd46b6f897bdfff7e147d0a9e9b4b4b6511"
+        },
+        {
+          "path": "skills/supply-chain-risk-auditor/scripts/uv.lock",
+          "sha256": "99598cc397a42c945abbc9d839d1c61f1852f414660ce41e2e68bd9cdf664100"
+        }
+      ]
+    },
+    {
+      "name": "differential-review",
+      "category": "seguridad",
+      "source_repo": "https://github.com/trailofbits/skills",
+      "path_in_repo": "plugins/differential-review/skills/differential-review",
+      "commit_sha": "0cc1c73a5e96749ab32d7ea5e14892fafa6972ae",
+      "git_tree_sha": "09ff02c96f84ad4b98184bcd5efae5b218caa910",
+      "license": "CC-BY-SA-4.0",
+      "license_file": "licenses/trailofbits-skills.LICENSE",
+      "verdict": "segura_con_observaciones",
+      "notes": "Solo Markdown + SVG (logo, sin script). allowed-tools: Read Write Grep Glob Bash (justificado por git log/blame/diff). Ejemplos sesgados a Solidity pero el método es genérico. Referencia un agente de plugin 'differential-review:adversarial-modeler' y las skills audit-context-building / issue-writer que NO se incluyen (el SKILL.md contempla su ausencia). Si no puede escribir el reporte en el repo, sugiere Desktop o ~/.claude/skills/differential-review/output/: indicar ruta explícita. Licencia CC-BY-SA-4.0.",
+      "staged_path": "skills/differential-review",
+      "files": [
+        {
+          "path": "skills/differential-review/SKILL.md",
+          "sha256": "f9af6a8193fc1a9f8ca3c54bb8d19095a5f20c9472ca6d014488bbde50b67da0"
+        },
+        {
+          "path": "skills/differential-review/adversarial.md",
+          "sha256": "3cb823f38c6e551cbcf5f72325d2bb219dacdad774072519c31d50d92db19800"
+        },
+        {
+          "path": "skills/differential-review/agents/openai.yaml",
+          "sha256": "0279d56f88dc1a04d4b1941a25fa7672912a3ceb0557b13c38d069908b30ae61"
+        },
+        {
+          "path": "skills/differential-review/assets/trail-of-bits-mark.svg",
+          "sha256": "4bf74c789b38dcf6ad762c136b6832363d27ae19fbaa9a18ec18d66ecce6ca05"
+        },
+        {
+          "path": "skills/differential-review/methodology.md",
+          "sha256": "16b335d24cf2145e3dc4a37f50056550d29db2efa20e6df78fec95ec1e6fb0b4"
+        },
+        {
+          "path": "skills/differential-review/patterns.md",
+          "sha256": "52abb18abbc73502a3d3b2f36a7a035adc1db40fd812d1d5424cf065036a06e9"
+        },
+        {
+          "path": "skills/differential-review/reporting.md",
+          "sha256": "0016876dc6f158e926448bff1b6f634796757c7afe09dff177cfe30250724fc4"
+        }
+      ]
+    },
+    {
+      "name": "archify",
+      "category": "presentacion-diagramas",
+      "source_repo": "https://github.com/tt-a1i/archify",
+      "path_in_repo": "archify",
+      "commit_sha": "9e35d2b0b39b155553ba9fcfe0b4f2a5198dd993",
+      "license": "MIT",
+      "license_file": "skills-licenses/tt-a1i-archify.LICENSE",
+      "verdict": "segura con observaciones",
+      "notes": "Diagramas HTML interactivos (arquitectura, workflow, secuencia, dataflow, ciclo de vida) para presentar la solución. Instalada sin la carpeta test/. Sin binarios ni Unicode invisible; sin dependencias de runtime (solo Node). Observaciones: (1) scripts/check-update.mjs hace un GET de solo lectura a https://tt-a1i.github.io/archify/skill-updates/archify/stable.json (no envía datos); se desactiva con ARCHIFY_UPDATE_CHECK_DISABLED=1; nunca descarga ni instala. (2) repository-evidence ejecuta git en modo lectura sobre el repo. (3) visual-check usa Chrome/Chromium local. (4) brand-marks solo descarga logos si el usuario da una URL. Prueba: validate + deliver de examples/web-app.architecture.json con 9/9 checks showcase.",
+      "files": [
+        {
+          "path": "skills/archify/LICENSE",
+          "sha256": "b799ab081703e7821ae5096d2c1abdf14bbdc75e8ea1c4045998c36ed6db9706"
+        },
+        {
+          "path": "skills/archify/SKILL.md",
+          "sha256": "10094272d6d1b4ad0f2c2e0880cb646fe4991454a2dc3d854aecb27e7407ee1f"
+        },
+        {
+          "path": "skills/archify/THIRD_PARTY_NOTICES.md",
+          "sha256": "0b7fb59365dc21c93b0f62526d74ee913aeec9ae532c112bc76afa7edcd56e14"
+        },
+        {
+          "path": "skills/archify/package-lock.json",
+          "sha256": "a900ea1ce2f33fca2b88ab1c8cb2cc30031ba285c05101a9b7b25768e6591c6f"
+        },
+        {
+          "path": "skills/archify/package.json",
+          "sha256": "2421a480f6bee01b684f14b96a5192d240d70d89ec6443c0279e6de77bc10a06"
+        },
+        {
+          "path": "skills/archify/skill-release.json",
+          "sha256": "269772492c38663b5d19730a54e5d7ad973ef04e47eb4f75b6dfa2e249614097"
+        },
+        {
+          "path": "skills/archify/references/authoring-contract.md",
+          "sha256": "82efc1be456365036a465aff9639a10c13dd6193471ec1f2a7ec5e163dbd1ba2"
+        },
+        {
+          "path": "skills/archify/references/brand-marks.md",
+          "sha256": "8010869da70677e686ecb312d9c3eec2d20723a44f817ab2bbf5525361c8a136"
+        },
+        {
+          "path": "skills/archify/references/delivery-contract.md",
+          "sha256": "1b8bc39b364f19d480260f7a0bf69d3b9a8d7591d69178ad17ff276889d9506b"
+        },
+        {
+          "path": "skills/archify/references/viewer-runtime.md",
+          "sha256": "dc0d9ffe6b9987d73d2d48710fce5ab4c120bbf1940ff1eb9355259c5d4f32b6"
+        },
+        {
+          "path": "skills/archify/recipes/scenarios.mjs",
+          "sha256": "e77d31d5b65b921799f4f560287fbac24feb3cd683bee8cabe49ed1ddde1a8ac"
+        },
+        {
+          "path": "skills/archify/schemas/README.md",
+          "sha256": "f4ca94ec18cf60ad02211f2c5bb64e9c26a87467a22215e06db34dbfc5d6145f"
+        },
+        {
+          "path": "skills/archify/schemas/architecture.schema.json",
+          "sha256": "94568c7ca72c07ac0ee02ee76bd39392874b3a13bb796a127962be68d0f5bc90"
+        },
+        {
+          "path": "skills/archify/schemas/common.schema.json",
+          "sha256": "2630c958314eeebb92e0f6f6330475f1a2bc48f8c1b53201ba3b58889b319c80"
+        },
+        {
+          "path": "skills/archify/schemas/dataflow.schema.json",
+          "sha256": "09d238a6a18f2e074ec69c8f905f58a44d3a0b68fc6a925b8346c484a912af90"
+        },
+        {
+          "path": "skills/archify/schemas/lifecycle.schema.json",
+          "sha256": "05b46c0db95ee7ed44305b61496a96bb4f69342b20f9903d6534d952ebc65083"
+        },
+        {
+          "path": "skills/archify/schemas/sequence.schema.json",
+          "sha256": "c9fec3fad087f14d55c0bb2d34446246e3405f0238c292c1cb6bef28d1120fcb"
+        },
+        {
+          "path": "skills/archify/schemas/workflow.schema.json",
+          "sha256": "2128e82afd2b971fcb7d80ada86fa836bb4a5035b504053b87d3aeefec380e3c"
+        },
+        {
+          "path": "skills/archify/assets/JetBrainsMono-OFL.txt",
+          "sha256": "c1ab7c666206842a02b35b30770dac0d7a10156ed401c9defc3f02a754d89e90"
+        },
+        {
+          "path": "skills/archify/assets/template.html",
+          "sha256": "505f1c6baa9c2454475c048aa75df8abd867e680e7b3b794b9218a95a56fc370"
+        },
+        {
+          "path": "skills/archify/migrations/workflow-v2.mjs",
+          "sha256": "77aadc38460e5e778344901f492cc00f16f74e8fe1def14b01e6d6d346b9f4c7"
+        },
+        {
+          "path": "skills/archify/scripts/check-render-output.mjs",
+          "sha256": "173b013e86195607fbc41a1aafc8731d145f3d2bf3e8d4c4f977fd6d17b7c4f4"
+        },
+        {
+          "path": "skills/archify/scripts/check-update.mjs",
+          "sha256": "7c7f47b35a55754fd85468c5e1cfc467bb2e1b9dd5c683dd60172844882b1970"
+        },
+        {
+          "path": "skills/archify/scripts/generate-brand-marks.mjs",
+          "sha256": "0434c31903b831382a91e85a329bcbcb39b32f29c656273a273f896b3b0a42e7"
+        },
+        {
+          "path": "skills/archify/scripts/generate-validators.mjs",
+          "sha256": "a5f5f67d3cd4675b16fa620043a5463f3c15aad89afb1b0c7cf42cf35e883f9a"
+        },
+        {
+          "path": "skills/archify/scripts/render-examples.mjs",
+          "sha256": "a173a053fb26c0ac3cd72eb9b4e50411e67ca8c50bec57f05d4ca8ba79db2c0b"
+        },
+        {
+          "path": "skills/archify/scripts/update-contract.mjs",
+          "sha256": "7c5d34c5fa2e08fcd0b42e33a0f3b4685fcecf3ac88f1ed820528df8fdc46cbc"
+        },
+        {
+          "path": "skills/archify/examples/agent-run.lifecycle.json",
+          "sha256": "7c0ad72ee7affbd6c6e4758b7520d61ddd4508c917acf36beabcad3ee7ca3ba7"
+        },
+        {
+          "path": "skills/archify/examples/agent-tool-call.workflow.json",
+          "sha256": "4d3f6c23de2ca7d306e05d0041a9506833bb5a164a2bddc2d1984cf4da3ee90c"
+        },
+        {
+          "path": "skills/archify/examples/async-job-roundtrip.sequence.json",
+          "sha256": "545f20920c89b69c2bb1f15508d5543fddbeb15cffba61e102206e04bd5a5cd9"
+        },
+        {
+          "path": "skills/archify/examples/brand-aware-delivery.architecture.json",
+          "sha256": "d4f0df8114b3524756ffa49529c015e00757b0594a357183490c1edeb341e3c6"
+        },
+        {
+          "path": "skills/archify/examples/cache-miss-request.sequence.json",
+          "sha256": "9a799a3661c16cd6ab4f6373ff6a04da95a9ab70d93b0a349b668466f4912fd7"
+        },
+        {
+          "path": "skills/archify/examples/checkout-platform.base.architecture.json",
+          "sha256": "c112195e7285e3e4aedaeab3e1f85f5891d30fccc2c260aebe4e1da12c80cf84"
+        },
+        {
+          "path": "skills/archify/examples/checkout-platform.head.architecture.json",
+          "sha256": "e3aaf47f77afeadafc81c6ce853dc1df68cc1e6932dec972cf478f4008fdda99"
+        },
+        {
+          "path": "skills/archify/examples/dataflow-product-analytics.html",
+          "sha256": "8e09936581b5240aab423aa698545e85103cf1a3d47cc6a5d0a0582c127625ba"
+        },
+        {
+          "path": "skills/archify/examples/deployment-release.lifecycle.json",
+          "sha256": "735c2c5819266e6ea2a71775b6eefce98b53030ce90cb721dc8e1d022ce5be71"
+        },
+        {
+          "path": "skills/archify/examples/event-stream.dataflow.json",
+          "sha256": "a92d6597ddbe164f395da32a7d4b33cfae08edd7d9600a6fb45a2058e5bbb43e"
+        },
+        {
+          "path": "skills/archify/examples/incident-response.workflow.json",
+          "sha256": "5c760c82eee545dfb7da38a4e628059d7891af4cfbfc13c8a7009ea64f69aa1b"
+        },
+        {
+          "path": "skills/archify/examples/lifecycle-agent-run.html",
+          "sha256": "de9b9fe608b5ece07d6d516665fe1cc844f09a76354ee46c8f1c80837624e457"
+        },
+        {
+          "path": "skills/archify/examples/product-analytics.dataflow.json",
+          "sha256": "91411404fb4828a3b7ea358f3a7b9877781c9e9dc9c04b42b6eb4a757281b59f"
+        },
+        {
+          "path": "skills/archify/examples/production-deployment.architecture.json",
+          "sha256": "ec484aa8576664fdb207b543fa49486b23273faccb7a5071e1a0becfb48c22eb"
+        },
+        {
+          "path": "skills/archify/examples/release-delivery.workflow.json",
+          "sha256": "e5c880417eac1623923c3dd5461e0c78acd762e1621a28bd53fc14a84cad6a91"
+        },
+        {
+          "path": "skills/archify/examples/sequence-cache-miss-request.html",
+          "sha256": "0570c137a36a8505cecd894fbd74ff8a49c5ab06746c25158467d9a782e35a64"
+        },
+        {
+          "path": "skills/archify/examples/web-app-rendered.html",
+          "sha256": "426db7bd1842de45916b00233b859dbb6cfb17a0d2fa9c70353c8fe121811d93"
+        },
+        {
+          "path": "skills/archify/examples/web-app.architecture.json",
+          "sha256": "483350f5297df682aba4e4a0fa491307ce3d3abd725ae4df07fab177490752cf"
+        },
+        {
+          "path": "skills/archify/examples/workflow-agent-tool-call-rendered.html",
+          "sha256": "c040b6bce3c9cab51146dfa44120204705ed68dbada05685de3e6ff40ecffdcc"
+        },
+        {
+          "path": "skills/archify/delta/architecture-delta.mjs",
+          "sha256": "b2bfd606bd606240d436718bd12dc96ccf4b0a0079fcc5a6a94fe6d2ba2349ef"
+        },
+        {
+          "path": "skills/archify/renderers/shared/brand-marks.mjs",
+          "sha256": "4557b7f3eec25a3dba66a0f5da1c5dca6ec607e2a68e9be51cd697cefe9e6425"
+        },
+        {
+          "path": "skills/archify/renderers/shared/cli.mjs",
+          "sha256": "92ea6537c3138a2c11f302b9f1546af7539ca42d6b400bebc29cadbb5184f664"
+        },
+        {
+          "path": "skills/archify/renderers/shared/desktop-readability.mjs",
+          "sha256": "b36203a11df348706e541f309266a0f9b914dac6a7eb8ba804e3abe8f8d6c710"
+        },
+        {
+          "path": "skills/archify/renderers/shared/diagnostics.mjs",
+          "sha256": "032bbcb4892c67fcda0f9c69f55fbcdd6b11dd291386a0cf118b1ba73ecda36f"
+        },
+        {
+          "path": "skills/archify/renderers/shared/engineering-profiles.mjs",
+          "sha256": "7e99f9d5423f66cc9ab6224da56dc2d5aa6c6faec29178034794e9db6b5b2889"
+        },
+        {
+          "path": "skills/archify/renderers/shared/generated-brand-marks.mjs",
+          "sha256": "0f157d229c12df6f53763a3b88684baa5803a52484c49c4d34ec40b8743beea2"
+        },
+        {
+          "path": "skills/archify/renderers/shared/generated-validators.mjs",
+          "sha256": "a1843e5612916e7ff71511d8577cdbea9a1355eee0ed1379de0ffd668992387f"
+        },
+        {
+          "path": "skills/archify/renderers/shared/geometry.mjs",
+          "sha256": "161785af32241fc96df051c9be4f2bb9c3b897418d708f4a051b63f1c44952cf"
+        },
+        {
+          "path": "skills/archify/renderers/shared/i18n.mjs",
+          "sha256": "0d9e839c3e5346160b0028d07fcf78c86671189e0714ea069dc99913e859fcdb"
+        },
+        {
+          "path": "skills/archify/renderers/shared/layout-report.mjs",
+          "sha256": "44c2f74a20e483dd37dae6791ede39284ce3bac1a2a13872d2912999e8504df5"
+        },
+        {
+          "path": "skills/archify/renderers/shared/legend.mjs",
+          "sha256": "4c8b37f10fb5c783a28bff6aa35bc3966155213ee32f64a8252eab5b9e64a747"
+        },
+        {
+          "path": "skills/archify/renderers/shared/output-path.mjs",
+          "sha256": "44a5f63239703a0a56623711bb9565272488c540650cb8c3f0a3aac57928d1cf"
+        },
+        {
+          "path": "skills/archify/renderers/shared/repository-evidence.mjs",
+          "sha256": "e8676fb59df158bdca00e76efdf897285f8d96d23b41a426c9bc575786f0932f"
+        },
+        {
+          "path": "skills/archify/renderers/shared/repository-location.mjs",
+          "sha256": "e82fa68ab46e71566eb7aefdb48f6df67b34fd27ce36489e7787410dbfba05ce"
+        },
+        {
+          "path": "skills/archify/renderers/shared/text-fit.mjs",
+          "sha256": "35b6ef2c64d88c1ea4e5aab2af7c4e8a2c2e1be62db71263787d39a9797e7dea"
+        },
+        {
+          "path": "skills/archify/renderers/shared/utils.mjs",
+          "sha256": "20124265300eb286db184a053561005cc32b6128dc1bc1b3f9520ffa8d43a241"
+        },
+        {
+          "path": "skills/archify/renderers/shared/validator.mjs",
+          "sha256": "7460d7fcbcdf710649256c5e96142ae26d807a655d3296ee8caf7f5e158622cc"
+        },
+        {
+          "path": "skills/archify/renderers/dataflow/README.md",
+          "sha256": "18c4f86ba62fcee371d9fe38094625b3a68cc76231c36ab8c8124acb4c1ffa42"
+        },
+        {
+          "path": "skills/archify/renderers/dataflow/render-dataflow.mjs",
+          "sha256": "5a5da505e5c68041990de92847f53a38215efb9212bc36fc911774e8829335c9"
+        },
+        {
+          "path": "skills/archify/renderers/sequence/README.md",
+          "sha256": "a442335dcf44b1587d3ad88809e31b001a4fafdf7a134040e8b1927455af4206"
+        },
+        {
+          "path": "skills/archify/renderers/sequence/render-sequence.mjs",
+          "sha256": "230c0fb79775badb4beb6fd74f45ed1ffbb70e932c3641a24bedcc61f912bddf"
+        },
+        {
+          "path": "skills/archify/renderers/workflow/README.md",
+          "sha256": "7e1bd65cc5cc38206304ae2f61f4f0f493da98d71a111a61d0754c9da362c5c9"
+        },
+        {
+          "path": "skills/archify/renderers/workflow/render-workflow.mjs",
+          "sha256": "83be05d1efd1816c527fccdf3ebbd4a0f1454c6cb0c9f7554c6702eb40d9c540"
+        },
+        {
+          "path": "skills/archify/renderers/workflow/workflow-compiler.mjs",
+          "sha256": "aa2a42d3d5c79642a4aaa0faef95fec9ce01727ad1d97e92ff8e59cba4926204"
+        },
+        {
+          "path": "skills/archify/renderers/workflow/workflow-migration-geometry.mjs",
+          "sha256": "ebfc5085dd008ae63802f500402fb7bf8ca0ae28460997d867f45e5493b8fbe6"
+        },
+        {
+          "path": "skills/archify/renderers/architecture/grid.mjs",
+          "sha256": "f6de99c32436feed3378b0ddef516bb4732ff27a89c543b50635d4d14a15a55a"
+        },
+        {
+          "path": "skills/archify/renderers/architecture/render-architecture.mjs",
+          "sha256": "f57077cb9fa64a8412ab0af705cb31e2e7a920114b31852882c04a76840365dc"
+        },
+        {
+          "path": "skills/archify/renderers/lifecycle/README.md",
+          "sha256": "f8ef88dc859189bb18bad7bb2e27d997cbc9d30936cf20f8bf401bae7f57deec"
+        },
+        {
+          "path": "skills/archify/renderers/lifecycle/render-lifecycle.mjs",
+          "sha256": "23720729a14495b4085839653ec0622f2465be3b1e8c9eb556b602ab3f4a8cda"
+        },
+        {
+          "path": "skills/archify/bin/archify.mjs",
+          "sha256": "7236f5ad129cf095bf78e0e612c5f0b2fb99dcefdf6cb752f36a4ed7aa580833"
+        },
+        {
+          "path": "skills/archify/bin/open-artifact.mjs",
+          "sha256": "add1722186683c12770c575585bbb8774919c15b87361e10d2fe834623223159"
+        },
+        {
+          "path": "skills/archify/bin/preview.mjs",
+          "sha256": "6d41e491d42070c05b5e278548714da1fcef6e6adfd84a0391ab2bf12f47373c"
+        },
+        {
+          "path": "skills/archify/bin/visual-check.mjs",
+          "sha256": "8fa8c6f233f3598f4f22e58c48a4de6f45b3b072ad8e7aee4731c49b4bfbdc52"
+        },
+        {
+          "path": "skills/archify/brand-marks/README.md",
+          "sha256": "8b771a16322ce9ea47fdc00b9935e33adf0f3af608f2d735235443e15ef622e2"
+        },
+        {
+          "path": "skills/archify/brand-marks/catalog.json",
+          "sha256": "e1a6c555cbf8ea36fb8100a4a25824e7ab87bebe9871e450ba05b6dea3b036d6"
+        }
+      ]
+    }
+  ],
+  "support_files": [
+    {
+      "name": "addyosmani-references",
+      "purpose": "Archivos compartidos que security-and-hardening y frontend-ui-engineering enlazan como ../../references/*.md (en .claude/ quedan como .claude/references/)",
+      "source_repo": "https://github.com/addyosmani/agent-skills",
+      "commit_sha": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+      "license": "MIT",
+      "license_file": "licenses/addyosmani-agent-skills.LICENSE",
+      "paths_in_repo": [
+        "references/security-checklist.md",
+        "references/accessibility-checklist.md"
+      ],
+      "git_blob_shas": {
+        "references/security-checklist.md": "fc5e29b92c183fa69e0952b61a99761dc48b4c0b",
+        "references/accessibility-checklist.md": "c8c61e5f3d5a010a0d0ecb918bfaffe6c76fca78"
+      },
+      "verdict": "segura",
+      "files": [
+        {
+          "path": "references/accessibility-checklist.md",
+          "sha256": "61c759d94d52296231f5f310b92b401f56c44e4430dc3cc95ebac5d7b1d5ffac"
+        },
+        {
+          "path": "references/security-checklist.md",
+          "sha256": "37774056502fe8970dcd2fd27dca5fa31f2a55232649fc3056c89c3af7d62755"
+        }
+      ]
+    }
+  ],
+  "discarded": [
+    {
+      "name": "claude-api",
+      "repo": "https://github.com/anthropics/skills",
+      "reason": "solapamiento",
+      "detail": "Claude Code ya trae la skill integrada 'claude-api' (mantenida por Anthropic); una copia fijada quedaría desactualizada en IDs de modelo. No se auditó a fondo (1,2 MB en 70 .md)."
+    },
+    {
+      "name": "mcp-builder",
+      "repo": "https://github.com/anthropics/skills",
+      "reason": "relevancia",
+      "detail": "Los retos no piden servidores MCP; trae scripts Python de evaluación que usan la API de Anthropic."
+    },
+    {
+      "name": "xlsx / pdf / docx / pptx",
+      "repo": "https://github.com/anthropics/skills",
+      "reason": "licencia",
+      "detail": "Licencia propietaria 'All rights reserved' (source-available), no permisiva; además orientadas a Python."
+    },
+    {
+      "name": "web-design-guidelines",
+      "repo": "https://github.com/vercel-labs/agent-skills",
+      "reason": "seguridad",
+      "detail": "En cada uso descarga instrucciones desde raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md (rama mutable) y las obedece: descarga remota en tiempo de ejecución = vector de prompt injection."
+    },
+    {
+      "name": "react-best-practices / composition-patterns",
+      "repo": "https://github.com/vercel-labs/agent-skills",
+      "reason": "relevancia_y_licencia",
+      "detail": "Orientadas a Next.js/RSC y bibliotecas de componentes; excesivas para un chat en Vite/HTML. El repo no tiene archivo LICENSE (solo 'license: MIT' en frontmatter y README)."
+    },
+    {
+      "name": "render-deploy",
+      "repo": "https://github.com/render-oss/skills",
+      "reason": "seguridad",
+      "detail": "Instruye instalar la CLI con 'curl -fsSL https://raw.githubusercontent.com/render-oss/cli/main/bin/install.sh | sh'. Además el plugin del repo trae hooks/auto-approve-render.sh (PreToolUse) que auto-aprueba comandos Bash que empiezan por 'render ' y es evadible encadenando comandos."
+    },
+    {
+      "name": "use-railway",
+      "repo": "https://github.com/railwayapp/railway-skills",
+      "reason": "seguridad",
+      "detail": "Instruye 'curl -fsSL agents.railway.com | sh'; además 600 KB con scripts Python que se conectan a bases de datos."
+    },
+    {
+      "name": "semgrep (static-analysis)",
+      "repo": "https://github.com/trailofbits/skills",
+      "reason": "seguridad",
+      "detail": "run-scans.sh hace 'git clone --depth 1' en tiempo de ejecución de repos de reglas de terceros sin fijar (0xdea, Decurity, elttam, akabe1, Apiiro...) y usa rulesets remotos del registry de Semgrep. Buena ingeniería (--metrics=off forzado, puerta de aprobación), pero viola la regla de no descargar contenido remoto sin fijar."
+    },
+    {
+      "name": "codeql (static-analysis)",
+      "repo": "https://github.com/trailofbits/skills",
+      "reason": "relevancia",
+      "detail": "Pesada (40+ archivos, scripts) y requiere CodeQL CLI y descarga de packs; para los retos basta CodeQL default setup de GitHub."
+    },
+    {
+      "name": "security-review",
+      "repo": "https://github.com/github/awesome-copilot",
+      "reason": "solapamiento",
+      "detail": "Choca con el comando integrado /security-review de Claude Code y solapa con security-and-hardening + differential-review."
+    },
+    {
+      "name": "agent-owasp-compliance",
+      "repo": "https://github.com/github/awesome-copilot",
+      "reason": "calidad",
+      "detail": "Heurísticas grep solo para *.py (inútiles en TS) y termina recomendando 'pip install agent-governance-toolkit'."
+    },
+    {
+      "name": "secret-scanning",
+      "repo": "https://github.com/github/awesome-copilot",
+      "reason": "solapamiento",
+      "detail": "Guía de configuración por UI de GitHub (push protection) + promoción de un plugin de Copilot; basta activar push protection (ver INFORME)."
+    },
+    {
+      "name": "agent-supply-chain",
+      "repo": "https://github.com/github/awesome-copilot",
+      "reason": "relevancia",
+      "detail": "Genera manifiestos de integridad para plugins; este manifest.json ya cumple esa función para las skills traídas."
+    },
+    {
+      "name": "docker-compose-patterns",
+      "repo": "https://github.com/docker/skills",
+      "reason": "solapamiento",
+      "detail": "Los retos son de un solo servicio; docker-project-foundations ya cubre el compose.yaml básico."
+    },
+    {
+      "name": "test-driven-development (addyosmani)",
+      "repo": "https://github.com/addyosmani/agent-skills",
+      "reason": "solapamiento",
+      "detail": "Mismo nombre y propósito que la de obra/superpowers (elegida por ser más estricta)."
+    },
+    {
+      "name": "sharp-edges / insecure-defaults",
+      "repo": "https://github.com/trailofbits/skills",
+      "reason": "relevancia",
+      "detail": "sharp-edges: 19 referencias multi-lenguaje, valor marginal frente a security-and-hardening; insecure-defaults no es una skill SKILL.md sino un workflow JS de plugin."
+    }
+  ]
+}

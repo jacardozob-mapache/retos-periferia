@@ -1,0 +1,69 @@
+{
+  "version": "2026-09-26",
+  "zona_horaria": "America/Bogota",
+  "severidades": {
+    "RC1": "bloqueo",
+    "RC1/resuelto_por_nombre": "informativo",
+    "RC2": "bloqueo",
+    "RC3": "bloqueo",
+    "RC4": "bloqueo",
+    "RC5": "confirmacion",
+    "RC6": "confirmacion",
+    "RC6/codigo_invalido": "confirmacion",
+    "RC7": "informativo",
+    "RC7/codigo_invalido": "confirmacion",
+    "RC8": "confirmacion",
+    "RC9": "confirmacion",
+    "RC10": "bloqueo"
+  },
+  "rc2": {
+    "palabras_aprobacion": ["aprobado", "aprobada"],
+    "negaciones": [
+      "no aprobado",
+      "no aprobada",
+      "no se aprueba",
+      "rechazado",
+      "rechazada",
+      "negado",
+      "negada"
+    ]
+  },
+  "rc3": { "moneda_topes": "COP" },
+  "rc5": { "tolerancia_porcentaje": 2 },
+  "rc10": { "tolerancia_unidades": 1 },
+  "sap": {
+    "sociedad": "1000",
+    "organizacion_compras": "1000",
+    "posicion_inicial": 10,
+    "incremento_posicion": 10,
+    "max_descripcion": 40,
+    "numero_oc_inicial": 4500000001
+  },
+  "descripcion": {
+    "palabras_finales_omitidas": [
+      "a",
+      "al",
+      "con",
+      "de",
+      "del",
+      "e",
+      "el",
+      "en",
+      "la",
+      "las",
+      "los",
+      "o",
+      "para",
+      "por",
+      "u",
+      "y"
+    ]
+  },
+  "unidades": {
+    "por_defecto": "UN",
+    "reglas": [
+      { "unidad": "H", "palabras": ["hora", "horas"] },
+      { "unidad": "MES", "palabras": ["mes", "meses"] }
+    ]
+  }
+}
