@@ -1,0 +1,109 @@
+# Verificación posterior al despliegue (opcional).
+#
+# El despliegue lo hace la integración Git de Vercel: un proyecto por reto con
+# Root Directory = reto-0X, producción en cada push a main y previews en PR.
+# Este workflow no despliega nada ni necesita credenciales: hace una prueba de
+# humo contra los links públicos de producción.
+#
+# - Se dispara cuando Vercel reporta un despliegue de producción exitoso
+#   (evento deployment_status) o a mano desde Actions (workflow_dispatch).
+# - Lee las URL de las variables del repositorio RETO_01_URL, RETO_02_URL y
+#   RETO_03_URL (Settings → Secrets and variables → Actions → Variables).
+#   Si una variable no existe, ese reto termina con un aviso, sin fallar.
+# - Comprueba: /api/health responde { ok: true }, y /api/config y
+#   /api/admin/uso rechazan las peticiones sin llave (401/403).
+#
+# Endurecimiento: sin checkout ni código del repositorio, sin token
+# (permissions: {}), sin acciones de terceros, y los datos externos (URL de las
+# variables) llegan al script solo por env: y se validan antes de usarse.
+name: Verificar despliegue
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: verificar-despliegue-${{ github.event.deployment.id || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  salud:
+    name: Salud de ${{ matrix.reto }}
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       startsWith(github.event.deployment.environment, 'Production'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions: {}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - reto: reto-01
+            variable_url: RETO_01_URL
+            url: ${{ vars.RETO_01_URL }}
+          - reto: reto-02
+            variable_url: RETO_02_URL
+            url: ${{ vars.RETO_02_URL }}
+          - reto: reto-03
+            variable_url: RETO_03_URL
+            url: ${{ vars.RETO_03_URL }}
+    env:
+      RETO: ${{ matrix.reto }}
+      VARIABLE_URL: ${{ matrix.variable_url }}
+      URL_PRODUCCION: ${{ matrix.url }}
+    steps:
+      - name: Prueba de humo del link de producción
+        run: |
+          set -euo pipefail
+
+          if [ -z "${URL_PRODUCCION}" ]; then
+            echo "::warning title=${RETO} sin verificar::No existe la variable ${VARIABLE_URL}. Créala con el link de producción (docs/DESPLIEGUE.md §8)."
+            echo "### ${RETO}: sin verificar (falta la variable \`${VARIABLE_URL}\`)" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          url="${URL_PRODUCCION%/}"
+          if ! printf '%s' "$url" | grep -Eq '^https://[A-Za-z0-9.-]+$'; then
+            echo "::error title=${RETO}::${VARIABLE_URL} debe ser un origen https sin ruta, p. ej. https://perxia-reto-01.vercel.app"
+            exit 1
+          fi
+
+          # 1) Salud: reintenta mientras el alias de producción apunta al nuevo despliegue.
+          salud=""
+          for intento in $(seq 1 12); do
+            if salud="$(curl --silent --show-error --fail --max-time 20 "${url}/api/health")" \
+              && printf '%s' "$salud" | jq -e '.ok == true' > /dev/null 2>&1; then
+              break
+            fi
+            salud=""
+            echo "Intento ${intento}/12: ${url}/api/health aún no responde ok; reintento en 10 s."
+            sleep 10
+          done
+          if [ -z "$salud" ]; then
+            echo "::error title=${RETO}::${url}/api/health no respondió { ok: true } en 2 minutos."
+            exit 1
+          fi
+          echo "✓ ${url}/api/health → ${salud}"
+
+          # 2) Acceso: sin llave, las rutas protegidas deben rechazar la petición.
+          for ruta in /api/config /api/admin/uso; do
+            codigo="$(curl --silent --output /dev/null --write-out '%{http_code}' --max-time 20 "${url}${ruta}")"
+            case "$codigo" in
+              401|403) echo "✓ ${ruta} sin llave → ${codigo}" ;;
+              *)
+                echo "::error title=${RETO}::${url}${ruta} respondió ${codigo} sin llave (se esperaba 401 o 403)."
+                exit 1
+                ;;
+            esac
+          done
+
+          {
+            echo "### ${RETO}: producción verificada"
+            echo "- Link: ${url}"
+            echo "- Salud: \`${salud}\`"
+            echo "- /api/config y /api/admin/uso rechazan peticiones sin llave"
+          } >> "$GITHUB_STEP_SUMMARY"
