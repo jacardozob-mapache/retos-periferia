@@ -9,7 +9,7 @@ import { AlmacenMemoria } from "../src/core/almacen/memoria"
 import type { LlamadaVisible, MensajeLLM, RespuestaChat } from "../src/core/contratos"
 import { crearApp } from "../src/core/http/servidor"
 import { type ContextoGuion, crearAdaptadorGuionado, type PasoGuion } from "../src/core/llm/guionado"
-import { configuracion } from "../src/server"
+import { configuracion } from "../src/configuracion"
 import { HOY, RAIZ } from "./ayuda"
 
 const LLAVE = "llave-e2e-reto02"
