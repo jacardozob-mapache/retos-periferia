@@ -14,7 +14,7 @@
 # y reemplazar el digest (Dependabot también propone el cambio).
 
 # ─── Etapa 1: dependencias de producción ─────────────────────────────────────
-FROM oven/bun:1.3.14@sha256:e10577f0db68676a7024391c6e5cb4b879ebd17188ab750cf10024a6d700e5c4 AS deps
+FROM oven/bun:1.4.3@sha256:ec06c3b6cea04192ae6770c434f668ca41d343ad19fa6472216c7b48be39c598 AS deps
 WORKDIR /app
 COPY package.json bun.lock ./
 # --frozen-lockfile: falla si bun.lock no corresponde a package.json.
@@ -23,7 +23,7 @@ RUN --mount=type=cache,target=/root/.bun/install/cache \
     bun install --frozen-lockfile --production --ignore-scripts
 
 # ─── Etapa 2: front compilado (bun run build → dist/web) ─────────────────────
-FROM oven/bun:1.3.14@sha256:e10577f0db68676a7024391c6e5cb4b879ebd17188ab750cf10024a6d700e5c4 AS build
+FROM oven/bun:1.4.3@sha256:ec06c3b6cea04192ae6770c434f668ca41d343ad19fa6472216c7b48be39c598 AS build
 WORKDIR /app
 COPY package.json bun.lock ./
 RUN --mount=type=cache,target=/root/.bun/install/cache \
@@ -32,7 +32,7 @@ COPY . .
 RUN NODE_ENV=production bun run build
 
 # ─── Etapa 3: ejecución ──────────────────────────────────────────────────────
-FROM oven/bun:1.3.14-slim@sha256:d56a2534ffd262e92c12fd3249d3924d296d97086da773f821d7d0477435ea04 AS runtime
+FROM oven/bun:1.4.3-slim@sha256:14a223fa35747ec728bce300ef85888bc5f7958164d15bbba6a54b22b52a3288 AS runtime
 
 LABEL org.opencontainers.image.title="perxia-reto-02" \
       org.opencontainers.image.source="https://github.com/jacardozob-mapache/retos-periferia" \
